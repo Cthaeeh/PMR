@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{bbm,amsthm,amsfonts,amssymb,amsmath,latexsym,epic,eepic}
 \usepackage{marvosym,graphicx,fancyhdr,bbm}
+\usepackage{graphicx}
 \usepackage[dvips]{color}
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
@@ -59,9 +60,6 @@
 
 
 \begin{document}\sloppy
-	
-Hallo 
-
 
 \title{\Large\bf Vergleich der Pfadverfolgung mit Odometrie und AMCL \footnotetext{Diese Arbeit ist Bestandteil des Praktikums zur Mess- und Regelungstechnik}}
 
@@ -90,11 +88,11 @@ Hallo
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 {
-test
-Die Automatisierung von Fahrzeugen spielt heutzutage immer eine gr\"o\ss{}ere Rolle. Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.}
+\textbf{Die Automatisierung von Fahrzeugen spielt heutzutage immer eine gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung, und Pfadverfolgung genutzt. Diese wurden auf einem realen Roboter implementiert und getestet.  Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. }
 
 
 \section{Einleitung}
+Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
 
 \section{ROS}
 
@@ -119,25 +117,27 @@ Man erkennt folgende Unterschiede ...
 
 
 \section{Kartierung mit Gmapping} \cite{gmapping}
-F\"ur die Lokalisation (mit AMCL) eines Roboters ist nat\"urlich eine Karte notwendig. Um diese zu erstellen kann der Gmapping Algorithmus verwendet werden. Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem simultaneous localization and mapping Problem	kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Positionen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, benötigt man gute Kartendaten. 
+F\"ur die Lokalisation (zum Beispiel mit AMCL) eines Roboters ist eine Karte notwendig. Um diese zu erstellen kann der Gmapping Algorithmus verwendet werden. Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, benötigt man wiederum Kartendaten. 
 
 
 
 g von Gmapping erklären!
 
 
+Bild von der Karte einfügen
+
 Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, aufgenommen worden. Um diese Karte korrekt auzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
 (Bild einfügen, in dem man Ungenauigkeit an Fenster sieht!) F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. (Eventuell unsere erste Karte mit Dorits vergleichen?)
 
-
+\begin{figure}[h]
+\includegraphics[width=0.25\textwidth]{pictures/firstMap.jpeg}
+\end{figure}
 
 eigene Karte einfügen. AMCL erwähnen.
 
 
 \section{Pfadverfolgung mit Giovanni Indiveri}
 \section{Zusammenfassung und Ausblick}
-
-
 
 
 \newpage
