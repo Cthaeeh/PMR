@@ -2,7 +2,7 @@
 \usepackage{bbm,amsthm,amsfonts,amssymb,amsmath,latexsym,epic,eepic}
 \usepackage{marvosym,graphicx,fancyhdr,bbm}
 \usepackage{graphicx}
-\usepackage[dvips]{color}
+\usepackage{color}
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
 \definecolor{Grey}{rgb}{0.5,0.5,0.5}
@@ -88,19 +88,19 @@
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 {
-\textbf{Die Automatisierung von Fahrzeugen spielt heutzutage immer eine gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung, und Pfadverfolgung genutzt. Diese wurden auf einem realen Roboter implementiert und getestet.  Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. }
+\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage immer eine gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung, und Pfadverfolgung genutzt. Diese wurden auf einem realen Roboter implementiert und getestet. Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. }
 
 
 \section{Einleitung}
 Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
 
 \section{ROS}
+Für die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es ermöglicht Hardware-Abstraktion, Paket-Managment und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren können. \cite{rosWiki}
+ 
 
 \section{Lokalisation}
 \subsection{Odometrie}
 {Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu.
-	
-	
 	
 	}
 \subsection{Adaptive  Monte Carlo Localisation}
@@ -130,8 +130,10 @@ Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem S
 (Bild einfügen, in dem man Ungenauigkeit an Fenster sieht!) F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. (Eventuell unsere erste Karte mit Dorits vergleichen?)
 
 \begin{figure}[h]
-\includegraphics[width=0.25\textwidth]{pictures/firstMap.jpeg}
+	\includegraphics[width=0.5\textwidth]{pictures/firstMap.jpg}
+	\caption{lol}
 \end{figure}
+
 
 eigene Karte einfügen. AMCL erwähnen.
 
