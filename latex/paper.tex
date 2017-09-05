@@ -101,7 +101,7 @@ Die ROS-Software ist in sogenannten Nodes organisiert, die über ROS miteienader
 
 \section{Lokalisation}
 \subsection{Odometrie}
-{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu. Mit Odometrie ist enges Kurven fahren nicht m\"oglich, der Pfad wird nicht richtig erkannt und falsch estimiert.
+{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
 	(Verkrüppeltes Bild einfügen)
 	
 	}
@@ -141,9 +141,16 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 Man erkennt folgende Unterschiede ...
 
+Vorteil AMCL: Fehler summieren sich nicht auf (auch bei sehr langen Pfaden ist der Fehler nicht größer als er auch bei einem kürzen ist)
+Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
+
+Nachteil Odmetrie: Aufsummation der Fehler bei langer Laufzeit , zunehmend schlechtere Qualität.
+Vorteil: Odometrie in Echtzeit
+
 
 \section{Kartierung mit Gmapping} \cite{gmapping}
-F\"ur die Lokalisation (zum Beispiel mit AMCL) eines Roboters ist eine Karte notwendig. Um diese zu erstellen kann der Gmapping Algorithmus verwendet werden. Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, benötigt man wiederum Kartendaten. 
+Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung wird aus den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet. Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.
+Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, benötigt man wiederum Kartendaten. 
 
 
 
@@ -152,7 +159,7 @@ g von Gmapping erklären!
 
 Bild von der Karte einfügen
 
-Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, aufgenommen worden. Um diese Karte korrekt aufzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
+Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
 (Bild einfügen, in dem man Ungenauigkeit an Fenster sieht!) F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. (Eventuell unsere erste Karte mit Dorits vergleichen?)
 
 \begin{figure}[h]
@@ -169,8 +176,11 @@ eigene Karte einfügen. AMCL erwähnen.
 
 Bild mit Pfad und Bezeichnungen einfügen
 
+Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen.
 
-Der Pfad wird zur Vereinfachungen in lineare Abschnitte aufgeteilt, wodurch sich die Gleichungen vereinfachen. Ohne Verlust der Allgemeinhait, wird die Fahrtrichtung des Robotors als x-Achse des Globalenkoordinatensytems angenommen und |y| (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
+Formeln aus Paper einfügen und Koordinatensystem
+
+Durch Koordinatentransformation, dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
 Steering-Controll-Law vereinfacht sich...
 
 
