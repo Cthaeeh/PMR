@@ -95,16 +95,42 @@
 Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
 
 \section{ROS}
-Für die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es ermöglicht Hardware-Abstraktion, Paket-Managment und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren können. \cite{rosWiki}
+F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Managment und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
+Die ROS-Software ist in sogenannten Nodes organisiert, die über ROS miteienader kommunizieren k\"onnen. So können Funktionalitäten wie Plannung, Pfadverfolgung, Sensorik und so weiter getrennt werden. Außerdem können so einfach Nodes von anderen Leuten genutzt werden. Dies ermöglicht uns schnell eine Plattform zum testen der Algortithmen aufzubauen, und einfach Algorithmen durch Nodes zu implementieren 
  
 
 \section{Lokalisation}
 \subsection{Odometrie}
-{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu.
+{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu. Mit Odometrie ist enges Kurven fahren nicht m\"oglich, der Pfad wird nicht richtig erkannt und falsch estimiert.
+	(Verkrüppeltes Bild einfügen)
 	
 	}
 \subsection{Adaptive  Monte Carlo Localisation}
-Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus zur Lokalisation von Robotern. Der Roboter ben\"otigt eine Karte der Umgebung. Auf der Karte sellt er Hypothesen auf, wo er sich auf der Karte befindet und wohin er schaut. Diese Hypothesen kann man sich als virtuelle Roboter vorstellen. Fährt der reale Roboter, so fahren auch die virtuellen Roboter. Dann werden reale Sensormesswerte mit denen der virtuellen Robotern abgelichen. Virtuelle Roboter mit unstimmigen Daten werden gel\"oscht. Der virtuelle Roboter  mit besten den Übereinstimmungen, ist die beste Estimation der Pose. 
+Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus zur Lokalisation von Robotern. Dazu ben\"otigt der Roboter eine Karte der Umgebung. Der Roboter stellt Hypothesen über seine Pose auf der Karte an. Die anfägliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
+Bei uns ist sie Gauß-verteilt um eine vom Menschen gegebene anfängliche Pose. 
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
+	\caption{Partikelverteilung in Anfangspose}
+\end{figure}
+
+Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. Fährt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen Ihre Sensormesswerte durch die Karte.
+
+Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. 
+
+Unwahrscheinlichere Hypothesen werden gelöscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt.
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
+	\caption{Partikelverteilung nach kurzer Neuorientrierung durch Bewegung}
+\end{figure}
+ 
+Der virtuelle Roboter  mit besten den Übereinstimmungen, ist die beste Estimation der Pose.
+Je näher die wahrscheinliche Hypothesen bei einander sind desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dasss A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
+
+Partikel und Gewicht und Partikelfiler erwähnen, virtuelle Roboter nur in einem Satz erwähnen.
+
+ 
 
 
 \subsection{Odometrie und AMCL im Vergleich}
@@ -126,12 +152,12 @@ g von Gmapping erklären!
 
 Bild von der Karte einfügen
 
-Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, aufgenommen worden. Um diese Karte korrekt auzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
+Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, aufgenommen worden. Um diese Karte korrekt aufzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
 (Bild einfügen, in dem man Ungenauigkeit an Fenster sieht!) F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. (Eventuell unsere erste Karte mit Dorits vergleichen?)
 
 \begin{figure}[h]
-	\includegraphics[width=0.5\textwidth]{pictures/firstMap.jpg}
-	\caption{lol}
+	\includegraphics[width=0.5\textwidth]{pictures/firstMap.jpeg}
+	\caption{Erkennbare Ungenauigkeiten durch Fenster und schr\"age Wand wegen zu hoher Geschwindigkeit}
 \end{figure}
 
 
@@ -139,14 +165,23 @@ eigene Karte einfügen. AMCL erwähnen.
 
 
 \section{Pfadverfolgung mit Giovanni Indiveri}
+\cite{Giovanni}
+
+Bild mit Pfad und Bezeichnungen einfügen
+
+
+Der Pfad wird zur Vereinfachungen in lineare Abschnitte aufgeteilt, wodurch sich die Gleichungen vereinfachen. Ohne Verlust der Allgemeinhait, wird die Fahrtrichtung des Robotors als x-Achse des Globalenkoordinatensytems angenommen und |y| (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
+Steering-Controll-Law vereinfacht sich...
+
+
 \section{Zusammenfassung und Ausblick}
 
 
 \newpage
 {%\small                   % use small if you need it
 	\bibliographystyle{plain}
-	\bibliography{gmapping}       % use a bib-file paper.bib to collect your references
-}
+	\bibliography{paper}       % use a bib-file paper.bib to collect
+
 \end{document}
 
 
