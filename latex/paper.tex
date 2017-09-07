@@ -86,7 +86,9 @@
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 {
-\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage immer eine gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung, und Pfadverfolgung genutzt. Diese wurden auf einem realen Roboter implementiert und getestet. Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. }
+\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung, und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.}
+
+Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. 
 
 
 \section{Einleitung}
@@ -94,7 +96,7 @@ Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorste
 
 \section{ROS}
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
-Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienader kommunizieren k\"onnen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik und so weiter getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht uns in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne großen Aufwand Algorithmen durch Nodes zu implementieren.
+Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienader kommunizieren k\"onnen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
  
 
 \section{Lokalisation}
@@ -178,7 +180,6 @@ Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-R
 Deutliche Unterschiede sind in den Karten von Figure 4 zu erkennen. Bild (a) zeigt eine Karte, die im ersten Versuch aufgenommen ist und aus Unwissenheit mit zu hoher Geschwindigkeit und nicht oft genug abgefahren ist. Im Vergleich dazu ist die Karte (b) durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien.
 
 
-
 eigene Karte einfügen. AMCL erwähnen.
 
 
@@ -209,19 +210,36 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu
 Durch Koordinatentransformation, dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
 
 
+
+
+\subsection{Test und Implementierung von gio path auf realem Roboter}
+
+Um den den xyz Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt gio path um einen realen Roboter zu steuern.
+
+  bool pathDone;
+  controller setPath( super path )
+  while(!pathDone)
+	  controller setPose(currentPose)
+	  pathDone = controller getNextState(wheelcontrol)
+	  publish(wheelCOntrol)
+
+ Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormige Anordnung. 
+
 \begin{figure}[h]
 	\centering
 	\subcaptionbox{}{
-		\includegraphics[width=0.45\textwidth]{pictures/path_.jpeg}}
+		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
 	\subcaptionbox{}{
-		\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
+		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung}
 \end{figure}
 
 
 
+
 \section{Zusammenfassung und Ausblick}
 
+Es zeigt sich das Odometrie schlechter als AMCL ist.
 
 \newpage
 {%\small                   % use small if you need it
