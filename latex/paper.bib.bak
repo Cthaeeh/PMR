@@ -1,0 +1,44 @@
+% This file was created with JabRef 2.10.
+% Encoding: UTF8
+
+
+@Article{Gmapping,
+  Title                    = {Improved Techniques for Grid Mapping with Rao-Blackwellized Particle Filters},
+  Author                   = {Giorgio Grisetti,Cyrill Stachniss,Wolfram Burgard},
+  Journal                  = {IEEE Transactions on Robotics},
+  Year                     = {2007},
+  Pages                    = {34-46},
+  Volume                   = {23},
+
+  Owner                    = {barbara},
+  Timestamp                = {2017.09.04}
+}
+
+@Article{Giovanni,
+  Title                    = {SWITCHING LINEAR PATH FOLLOWING FOR
+BOUNDED CURVATURE CAR-LIKE
+VEHICLES},
+  Author                   = {Maria Letizia Corradini,Giovanni Indiveri},
+  Year                     = {2004},
+
+  Owner                    = {barbara},
+  Timestamp                = {2017.09.05}
+}
+
+@Misc{mclWiki,
+  Title                    = {Monte Carlo localization},
+  HowPublished             = {Website},
+
+  Owner                    = {barbara},
+  Timestamp                = {2017.09.06},
+  Url                      = {https://en.wikipedia.org/wiki/Monte_Carlo_localization}
+}
+
+@Misc{rosWiki,
+  Title                    = {Robot Operating System},
+  HowPublished             = {Wikipedia},
+
+  Owner                    = {kai},
+  Timestamp                = {2017.09.04}
+}
+

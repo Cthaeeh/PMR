@@ -5,6 +5,7 @@
 \usepackage{color}
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
+\usepackage{subcaption}
 \definecolor{Grey}{rgb}{0.5,0.5,0.5}
 \definecolor{Red}{rgb}{1.0,0.0,0.0}
 
@@ -77,9 +78,6 @@
 
 \maketitle
 
-\newpage
-
-\tableofcontents{}
 
 \newpage
 
@@ -95,8 +93,8 @@
 Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
 
 \section{ROS}
-F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Managment und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
-Die ROS-Software ist in sogenannten Nodes organisiert, die über ROS miteienader kommunizieren k\"onnen. So können Funktionalitäten wie Plannung, Pfadverfolgung, Sensorik und so weiter getrennt werden. Außerdem können so einfach Nodes von anderen Leuten genutzt werden. Dies ermöglicht uns schnell eine Plattform zum testen der Algortithmen aufzubauen, und einfach Algorithmen durch Nodes zu implementieren 
+F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
+Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienader kommunizieren k\"onnen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik und so weiter getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht uns in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne großen Aufwand Algorithmen durch Nodes zu implementieren.
  
 
 \section{Lokalisation}
@@ -114,11 +112,11 @@ Bei uns ist sie Gau{\ss}-verteilt um gegebene anfängliche Pose.
 	\caption{Partikelverteilung in Anfangspose}
 \end{figure}
 
-Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. Fährt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen Ihre Sensormesswerte durch die Karte.
+Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte.
 
 Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. 
 
-Unwahrscheinlichere Hypothesen werden gelöscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt.
+Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
@@ -126,7 +124,7 @@ Unwahrscheinlichere Hypothesen werden gelöscht und neue im Bereich der wahrsche
 \end{figure}
  
 Der virtuelle Roboter  mit besten den Übereinstimmungen, ist die beste Estimation der Pose.
-Je näher die wahrscheinliche Hypothesen bei einander sind desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dasss A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
+Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dass A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
 
 Partikel und Gewicht, virtuelle Roboter nur in einem Satz erwähnen.
 
@@ -134,21 +132,24 @@ Partikel und Gewicht, virtuelle Roboter nur in einem Satz erwähnen.
 
 
 \subsection{Odometrie und AMCL im Vergleich}
-Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell.  
+Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Ein Problem entsteht am Anfang, da AMCL nur korrekt arbeitet, wenn die Startpose vorher durch den Benutzer auf den Punkt genau gesch\"atzt wird oder durch Bewegung des Roboters spezifiziert wird. Durch die Bewegung verliert aber die Odometrie an Genauigkeit und startet nicht mehr im Ursprung (0/0). Um Genauigkeit zu garantieren, wird ein Algorithmus verwendet, der die Koordinatensysteme nach der Kalibrierung transformiert.
 
 \begin{figure}[h]
-	\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}
-	\caption{ Odometrie und AMCL im Vergleich. Mit einer Geschwindigkeit $\leq$ 2km/h}
+	\centering
+	\subcaptionbox{Mit einer Geschwindigkeit $\leq$ 2km/h}{\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}}\par\medskip
+	\caption{ Odometrie und AMCL im Vergleich. }
 \end{figure}
+
+
 
 
 Man erkennt folgende Unterschiede ...
 
-Vorteil AMCL: Fehler summieren sich nicht auf (auch bei sehr langen Pfaden ist der Fehler nicht größer als er auch bei einem kürzen ist)
+Im Experiment startet der Roboter im Ursprung und schon am Anfang kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss die menschliche Ungenauigkeit in diesem Versuch beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"oßer ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+
+
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
 
-Nachteil Odmetrie: Aufsummation der Fehler bei langer Laufzeit, zunehmend schlechtere Qualit\"at.
-         In Figure 3 ist ersichtlich, dass durch die Aufsummierung die Zielpose nicht mehr mit der Startpose \"ubereinstimmt.
 Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
 
 
@@ -160,16 +161,22 @@ Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartieru
 
 g von Gmapping erklären!
 
-
-Bild von der Karte einfügen
-
-Das Untergeschoss des Informatikinstituts ist mit einem Roboter, der mit einem Sick-Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
-(Bild einfügen, in dem man Ungenauigkeit an Fenster sieht!) F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. (Eventuell unsere erste Karte mit Dorits vergleichen?)
-
 \begin{figure}[h]
-	\includegraphics[width=0.5\textwidth]{pictures/firstMap.jpeg}
-	\caption{Erkennbare Ungenauigkeiten durch Fenster und schr\"age Wand wegen zu hoher Geschwindigkeit}
+	\centering
+	\subcaptionbox{fehlerhafte Karte}{
+		\includegraphics[width=0.45\textwidth]{pictures/firstMap.jpeg}}
+	\subcaptionbox{korrekte Karte}{
+		\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
+	\caption{Karten aufgezeichnet mit Gmapping}
 \end{figure}
+
+
+Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick-Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. 
+
+
+
+Deutliche Unterschiede sind in den Karten von Figure 4 zu erkennen. Bild (a) zeigt eine Karte, die im ersten Versuch aufgenommen ist und aus Unwissenheit mit zu hoher Geschwindigkeit und nicht oft genug abgefahren ist. Im Vergleich dazu ist die Karte (b) durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien.
+
 
 
 eigene Karte einfügen. AMCL erwähnen.
@@ -181,26 +188,36 @@ eigene Karte einfügen. AMCL erwähnen.
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/Pfadverfolgung.JPG}
-	\caption{}
+	\caption{Modell der Pfadverfolgung}
 \end{figure}
 
-Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen.
+Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Dabei muss sowohl die maximale Geschwindigkeit, als auch der minimale Wendekreis des Roboters beachtet werden. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen. Die Formel f\"ur die Winkelgeschwindigkeit $\omega$
 
 
 \begin{equation}
  \omega=  \frac{u \kappa(s) cos(\tilde{\theta})}{1-l \kappa(s)}-h u l  \frac{sin(\tilde{\theta})}{\tilde{\theta}}-\gamma\tilde{\theta} :h\gamma > 0
 \end{equation}
 
-zu 
+vereinfacht sich im linearen Fall $\kappa(s)=0$ zu 
 
 \begin{equation}
-\omega= -h u y  \frac{sin(\tilde{\theta})}{\tilde{\theta}}-\gamma\tilde{\theta} :h\gamma > 0
+\omega= -h u y  \frac{sin(\theta)}{\theta}-\gamma\theta :h\gamma > 0
 \end{equation}
 
 
 
 Durch Koordinatentransformation, dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
-Steering-Controll-Law vereinfacht sich...
+
+
+\begin{figure}[h]
+	\centering
+	\subcaptionbox{}{
+		\includegraphics[width=0.45\textwidth]{pictures/path_.jpeg}}
+	\subcaptionbox{}{
+		\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
+	\caption{Pfadverfolgung}
+\end{figure}
+
 
 
 \section{Zusammenfassung und Ausblick}
