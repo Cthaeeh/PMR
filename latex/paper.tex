@@ -105,9 +105,9 @@ Die ROS-Software ist in sogenannten Nodes organisiert, die über ROS miteienader
 	(Verkrüppeltes Bild einfügen)
 	
 	}
-\subsection{Adaptive  Monte Carlo Localisation}
-Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus zur Lokalisation von Robotern. Dazu ben\"otigt der Roboter eine Karte der Umgebung. Der Roboter stellt Hypothesen über seine Pose auf der Karte an. Die anfägliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
-Bei uns ist sie Gauß-verteilt um eine vom Menschen gegebene anfängliche Pose. 
+\subsection{Adaptive  Monte Carlo Localisation \cite{mclWiki}}
+Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Der Roboter stellt Hypothesen \"uber seine Pose auf der Karte an. Die anf\"angliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
+Bei uns ist sie Gau{\ss}-verteilt um gegebene anfängliche Pose. 
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
@@ -128,7 +128,7 @@ Unwahrscheinlichere Hypothesen werden gelöscht und neue im Bereich der wahrsche
 Der virtuelle Roboter  mit besten den Übereinstimmungen, ist die beste Estimation der Pose.
 Je näher die wahrscheinliche Hypothesen bei einander sind desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dasss A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
 
-Partikel und Gewicht und Partikelfiler erwähnen, virtuelle Roboter nur in einem Satz erwähnen.
+Partikel und Gewicht, virtuelle Roboter nur in einem Satz erwähnen.
 
  
 
@@ -136,7 +136,10 @@ Partikel und Gewicht und Partikelfiler erwähnen, virtuelle Roboter nur in einem
 \subsection{Odometrie und AMCL im Vergleich}
 Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell.  
 
-->insert Diagramm mit Position durch Odometrie und AMCL 
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}
+	\caption{ Odometrie und AMCL im Vergleich. Mit einer Geschwindigkeit $\leq$ 2km/h}
+\end{figure}
 
 
 Man erkennt folgende Unterschiede ...
@@ -144,13 +147,14 @@ Man erkennt folgende Unterschiede ...
 Vorteil AMCL: Fehler summieren sich nicht auf (auch bei sehr langen Pfaden ist der Fehler nicht größer als er auch bei einem kürzen ist)
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
 
-Nachteil Odmetrie: Aufsummation der Fehler bei langer Laufzeit , zunehmend schlechtere Qualität.
-Vorteil: Odometrie in Echtzeit
+Nachteil Odmetrie: Aufsummation der Fehler bei langer Laufzeit, zunehmend schlechtere Qualit\"at.
+         In Figure 3 ist ersichtlich, dass durch die Aufsummierung die Zielpose nicht mehr mit der Startpose \"ubereinstimmt.
+Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
 
 
 \section{Kartierung mit Gmapping} \cite{gmapping}
 Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung wird aus den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet. Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.
-Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, benötigt man wiederum Kartendaten. 
+Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. 
 
 
 
@@ -174,11 +178,26 @@ eigene Karte einfügen. AMCL erwähnen.
 \section{Pfadverfolgung mit Giovanni Indiveri}
 \cite{Giovanni}
 
-Bild mit Pfad und Bezeichnungen einfügen
 
-Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen.
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{pictures/Pfadverfolgung.JPG}
+	\caption{}
+\end{figure}
 
-Formeln aus Paper einfügen und Koordinatensystem
+Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen.
+
+
+\begin{equation}
+ \omega=  \frac{u \kappa(s) cos(\tilde{\theta})}{1-l \kappa(s)}-h u l  \frac{sin(\tilde{\theta})}{\tilde{\theta}}-\gamma\tilde{\theta} :h\gamma > 0
+\end{equation}
+
+zu 
+
+\begin{equation}
+\omega= -h u y  \frac{sin(\tilde{\theta})}{\tilde{\theta}}-\gamma\tilde{\theta} :h\gamma > 0
+\end{equation}
+
+
 
 Durch Koordinatentransformation, dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"ubereinanderlegen zu null.
 Steering-Controll-Law vereinfacht sich...
@@ -190,7 +209,7 @@ Steering-Controll-Law vereinfacht sich...
 \newpage
 {%\small                   % use small if you need it
 	\bibliographystyle{plain}
-	\bibliography{paper}       % use a bib-file paper.bib to collect
+	\bibliography{paper.bib}       % use a bib-file paper.bib to collect
 
 \end{document}
 
