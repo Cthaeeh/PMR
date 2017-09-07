@@ -106,7 +106,7 @@ Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienade
 	
 	}
 \subsection{Adaptive  Monte Carlo Localisation \cite{mclWiki}}
-Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Der Roboter stellt Hypothesen \"uber seine Pose auf der Karte an. Die anf\"angliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
+Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen \"uber auf der Karte an. Durch Laserscans, die durch die Bewegung des Roboters erfasst werden, vergleicht der Roboter die Messpunkte mit der Karte und bestimmt so seine Startpose. Die anf\"angliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
 Bei uns ist sie Gau{\ss}-verteilt um gegebene anfängliche Pose. 
 
 \begin{figure}[h]
@@ -118,7 +118,13 @@ Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"
 
 Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. 
 
-Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt.
+Probleme oder eine l\"angere Lokalisierungsdauer treten auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel.
+
+Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt. Durch das L\"oschen der unwahrscheinlichen Posen, ist AMCL oft als Partikelfilter bezeichnet.
+
+
+
+
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
@@ -147,7 +153,7 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 Man erkennt folgende Unterschiede ...
 
-Im Experiment startet der Roboter im Ursprung und schon am Anfang kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss die menschliche Ungenauigkeit in diesem Versuch beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"oßer ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss}, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"oßer ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
 
 
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
@@ -183,7 +189,8 @@ Deutliche Unterschiede sind in den Karten von Figure 4 zu erkennen. Bild (a) zei
 eigene Karte einfügen. AMCL erwähnen.
 
 
-\section{Pfadverfolgung mit Giovanni Indiveri}
+\section{Pfadverfolgung}
+\subsection{Pfadverfolgung mit Giovanni Indiveri}
 \cite{Giovanni}
 
 
@@ -192,18 +199,18 @@ eigene Karte einfügen. AMCL erwähnen.
 	\caption{Modell der Pfadverfolgung}
 \end{figure}
 
-Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Dabei muss sowohl die maximale Geschwindigkeit, als auch der minimale Wendekreis des Roboters beachtet werden. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen. Die Formel f\"ur die Winkelgeschwindigkeit $\omega$
+Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini wird zur Pfadverfolgung verwendet. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Dabei muss sowohl die maximale Geschwindigkeit, als auch der minimale Wendekreis des Roboters beachtet werden. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst.Das Modell in Figure 5 stellt den abzufahrenden Pfad dar. Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen. Die Formel f\"ur die Winkelgeschwindigkeit $\omega$
 
 
 \begin{equation}
  \omega=  \frac{u \kappa(s) cos(\tilde{\theta})}{1-l \kappa(s)}-h u l  \frac{sin(\tilde{\theta})}{\tilde{\theta}}-\gamma\tilde{\theta} :h\gamma > 0
-\end{equation}
+\end{equation}\\
 
-vereinfacht sich im linearen Fall $\kappa(s)=0$ zu 
+vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 
 \begin{equation}
 \omega= -h u y  \frac{sin(\theta)}{\theta}-\gamma\theta :h\gamma > 0
-\end{equation}
+\end{equation}\\
 
 
 
@@ -212,18 +219,20 @@ Durch Koordinatentransformation, dient die x-Achse als die Fahrtrichtung des Rob
 
 
 
-\subsection{Test und Implementierung von gio path auf realem Roboter}
+\subsection{Test und Implementierung von \texttt{gio\_path} auf einem realen Roboter}
 
-Um den den xyz Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt gio path um einen realen Roboter zu steuern.
+Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
+\\
 
-  bool pathDone;
-  controller setPath( super path )
-  while(!pathDone)
-	  controller setPose(currentPose)
-	  pathDone = controller getNextState(wheelcontrol)
+  bool pathDone\\
+  controller setPath( super path ) \\
+  while(!pathDone)                  \\
+	  controller setPose(currentPose)\\
+	  pathDone = controller getNextState(wheelcontrol) \\
 	  publish(wheelCOntrol)
+\\
 
- Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormige Anordnung. 
+ Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal in niedriger und hoher Geschwindigkeit abgefahren. Zu Beobachten ist, dass  
 
 \begin{figure}[h]
 	\centering
