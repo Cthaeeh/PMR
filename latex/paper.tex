@@ -96,7 +96,15 @@ Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorste
 
 \section{ROS}
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
-Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienader kommunizieren k\"onnen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
+
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
+	\caption{Kommunikation zwischen Nodes}
+\end{figure}
+
+Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchführen. Der ROS-Master hilft Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes können auf Topics veröffentlichen und diese abonnieren. \cite{rosConcepts}
+
+Durch die Nodes können Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
  
 
 \section{Lokalisation}
