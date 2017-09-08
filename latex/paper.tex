@@ -109,30 +109,25 @@ Durch die Nodes k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensor
 
 \section{Lokalisation}
 \subsection{Odometrie}
-{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
-	(Verkrüppeltes Bild einfügen)
-	
-	}
+{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position des Roboters und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Die vermutliche Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feed back über die Position gibt ist das eine "Open loop". Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
+	(Verkrüppeltes Bild einfügen)	
+}
+\newpage
+
 \subsection{Adaptive  Monte Carlo Localisation \cite{mclWiki}}
-Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen \"uber auf der Karte an. Durch Laserscans, die durch die Bewegung des Roboters erfasst werden, vergleicht der Roboter die Messpunkte mit der Karte und bestimmt so seine Startpose. Die anf\"angliche Verteilung dieser Hypothesen auf der Karte kann verschieden sein. 
-Bei uns ist sie Gau{\ss}-verteilt um gegebene anfängliche Pose. 
+Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen dar\"uber auf der Karte an, verteilt also die Partikel über den Zustandsraum. Die anf\"angliche Verteilung auf der Karte kann verschieden sein. Es ist zum Beispiel möglich diese  gleichmäßig über die ganze Karte zu verteilen. 
+Bei der von den Autoren verwendeten Implementation von AMCL ist sie Gau{\ss}-verteilt um eine gegebene anf\"angliche, gegebene Pose. Ist der Roboter tatsälich an einem anderen Ort, so hat er keine Chance sich zu lokalisieren. 
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
 	\caption{Partikelverteilung in Anfangspose}
 \end{figure}
 
-Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte.
+Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte. Als reale Sensormesswerte werden die Messungen des Laserscanners verwendet.
 
-Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. 
+Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. Daher werden jene Partikel gelöscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Patikel/Hypothesen erzeugt.
 
-Probleme oder eine l\"angere Lokalisierungsdauer treten auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel.
-
-Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrscheinlicheren aufgestellt, bzw. dort neue virtuelle Roboter erzeugt. Durch das L\"oschen der unwahrscheinlichen Posen, ist AMCL oft als Partikelfilter bezeichnet.
-
-
-
-
+Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrscheinlicheren aufgestellt. 
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
@@ -140,12 +135,13 @@ Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrsch
 \end{figure}
  
 Der virtuelle Roboter  mit besten den \"Ubereinstimmungen, ist die beste Estimation der Pose.
-Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dass A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
+Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dass A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher. 
 
-Partikel und Gewicht, virtuelle Roboter nur in einem Satz erwähnen.
+Es kann passieren dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realität überein verteilt er die Partikel überall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
 
- 
+Probleme oder eine l\"angere Lokalisierungsdauer treten auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
 
+Bild eifügen AMCL verkackt.
 
 \subsection{Odometrie und AMCL im Vergleich}
 Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber eine Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Ein Problem entsteht am Anfang, da AMCL nur korrekt arbeitet, wenn die Startpose vorher durch den Benutzer auf den Punkt genau gesch\"atzt wird oder durch Bewegung des Roboters spezifiziert wird. Durch die Bewegung verliert aber die Odometrie an Genauigkeit und startet nicht mehr im Ursprung (0/0). Um Genauigkeit zu garantieren, wird ein Algorithmus verwendet, der die Koordinatensysteme nach der Kalibrierung transformiert.
