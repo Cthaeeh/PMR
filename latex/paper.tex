@@ -101,7 +101,7 @@ Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienade
 
 \section{Lokalisation}
 \subsection{Odometrie}
-{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder Reibung zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
+{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
 	(Verkrüppeltes Bild einfügen)
 	
 	}
@@ -131,7 +131,7 @@ Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrsch
 	\caption{Partikelverteilung nach kurzer Neuorientrierung durch Bewegung}
 \end{figure}
  
-Der virtuelle Roboter  mit besten den Übereinstimmungen, ist die beste Estimation der Pose.
+Der virtuelle Roboter  mit besten den \"Ubereinstimmungen, ist die beste Estimation der Pose.
 Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dass A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher
 
 Partikel und Gewicht, virtuelle Roboter nur in einem Satz erwähnen.
@@ -153,7 +153,7 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 Man erkennt folgende Unterschiede ...
 
-Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss}, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"oßer ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss}, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
 
 
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
@@ -234,14 +234,14 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{}{
+	\subcaptionbox{niedrige Geschwindigkeit}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
-	\subcaptionbox{}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung}
 \end{figure}
 
-Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass 
+Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
 
 
 \section{Zusammenfassung und Ausblick}
