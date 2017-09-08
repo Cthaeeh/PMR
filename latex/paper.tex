@@ -96,7 +96,7 @@ Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorste
 
 \section{ROS}
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
-Die ROS-Software ist in sogenannten Nodes organisiert, die \"uber ROS miteienader kommunizieren k\"onnen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
+Die ROS-Software ist in sogenannten Nodes organisiert, denen der ROS-Master hilft sich zu finden und eine Verbindung aufzubauen. So k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
  
 
 \section{Lokalisation}
@@ -165,7 +165,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung wird aus den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet. Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.
 Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. 
 
-
+Die Idee des  \textit{Grid}Mappings ist, die Umgebung auf der Karte in bin\"aren Zufallsvariablen darzustellen. Die Variablen stellen Objekte in der Umgebung dar. Die Algorithmen, wie AMCL, werten die Zufallsvariablen aus. 
 
 g von Gmapping erklären!
 
@@ -241,7 +241,7 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 	\caption{Pfadverfolgung}
 \end{figure}
 
-Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
+Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal in niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
 
 
 \section{Zusammenfassung und Ausblick}
