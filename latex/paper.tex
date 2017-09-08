@@ -6,6 +6,7 @@
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
 \usepackage{subcaption}
+\usepackage[vlined, ruled, boxed]{algorithm2e}
 \definecolor{Grey}{rgb}{0.5,0.5,0.5}
 \definecolor{Red}{rgb}{1.0,0.0,0.0}
 
@@ -75,7 +76,6 @@
 
 
 
-
 \maketitle
 
 
@@ -102,15 +102,14 @@ F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Opera
 	\caption{Kommunikation zwischen Nodes}
 \end{figure}
 
-Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchführen. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren. \cite{rosConcepts}
+Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren. \cite{rosConcepts}
 
-Durch die Nodes k\"onnen Funktionalit\"aten wie Plannung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
+Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden. 
  
 
 \section{Lokalisation}
 \subsection{Odometrie}
-{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position des Roboters und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Die vermutliche Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feed back über die Position gibt ist das eine "Open loop". Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 
-	(Verkrüppeltes Bild einfügen)	
+{Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position des Roboters und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Die vermutliche Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feed back über die Position gibt ist das eine "Open loop". Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 	
 }
 \newpage
 
@@ -137,7 +136,7 @@ Unwahrscheinlichere Hypothesen werden gel\"oscht und neue im Bereich der wahrsch
 Der virtuelle Roboter  mit besten den \"Ubereinstimmungen, ist die beste Estimation der Pose.
 Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Dann kann die Anzahl der Hypothesen reduziert werden, daher dass A wie Adaptive aus AMCL. Dies reduziert die CPU Auslastung und den Speicher. 
 
-Es kann passieren dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realität überein verteilt er die Partikel überall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
+Es kann passieren, dass AMCL sich die Anzahl der Partikel so weit verringert, dass der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realit\"at überein, verteilt er die Partikel \"uberall. Hat die Hypothese eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
 
 Probleme oder eine l\"angere Lokalisierungsdauer treten auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
 
@@ -155,9 +154,7 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 
 
-Man erkennt folgende Unterschiede ...
-
-Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Sartpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss}, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss}, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
 
 
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
@@ -170,8 +167,8 @@ Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung 
 Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
 
 Die Idee des  \textit{Grid}Mappings ist, die Umgebung auf der Karte in bin\"aren Zufallsvariablen darzustellen. Die Variablen stellen Objekte in der Umgebung dar. Die Algorithmen, wie AMCL, werten die Zufallsvariablen aus. 
-
-
+\\
+\\
 \begin{figure}[h]
 	\centering
 	\subcaptionbox{fehlerhafte Karte}{
@@ -181,8 +178,7 @@ Die Idee des  \textit{Grid}Mappings ist, die Umgebung auf der Karte in bin\"aren
 	\caption{Karten aufgezeichnet mit Gmapping}
 \end{figure}
 
-
-Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick-Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 1 m/s abzufahren. 
+Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/s (halbe Schrittgeschwindigkeit) abzufahren. 
 
 
 
@@ -229,6 +225,30 @@ Zun\"achst wird die Pfadverfolgung simuliert. Der Robotersimulator wird in ROS-N
 Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
 \\
 
+
+\begin{algorithm}
+	\KwData{model directory}
+	\KwResult{multi-resolution model}
+	enter directory\;
+	geometrylist $\leftarrow$ search geometry files\;
+	$np$ $\leftarrow$ number of total processes\;
+	$ng$ $\leftarrow$ number of total geometry files\;
+	\eIf{$ng < np$ and $processid < ng$}{
+		GenSeparateLODFile(geometrylist[processid])\;
+	}{
+	sort geometrylist by file size\;
+	\While{i*processid $<$ ng}{
+		GenSeparateLODFile(geometrylist[processid*i])\;
+		$i$++\;
+	}
+}
+wait for all processes to end\;
+\If{isLastProcess}{
+	assembly each LOD geometry\;
+}
+\caption{PLG}
+\end{algorithm}
+
   \textbf{bool} pathDone\\
   controller setPath( super path ) \\
   \textbf{while}(!pathDone)                  \\
@@ -243,15 +263,36 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
 	\subcaptionbox{erh\"ohte Geschwindigkeit}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
-	\caption{Pfadverfolgung}
+	\caption{Pfadverfolgung Odometrie}
 \end{figure}
 
+
+\begin{figure}[h]
+	\centering
+	\subcaptionbox{niedrige Geschwindigkeit}{
+		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_slow.jpg}}
+	\subcaptionbox{erh\"ohte Geschwindigkeit}{
+		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_fast.jpg}}
+	\caption{Pfadverfolgung AMCL}
+\end{figure}
+
+
 Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal in niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
+
+
+Geschwindigkeit langsam: 20   5cm Genauigkeit
+				schnell: 90	  20cm 
+				 
 
 
 \section{Zusammenfassung und Ausblick}
 
 Es zeigt sich das Odometrie schlechter als AMCL ist.
+
+
+
+
+
 
 \newpage
 {%\small                   % use small if you need it
