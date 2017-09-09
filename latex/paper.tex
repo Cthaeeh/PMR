@@ -125,7 +125,7 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 	
 	Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte. Als reale Sensormesswerte werden die Messungen des Laserscanners verwendet.
 	
-	Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. Daher werden jene Partikel gel\"oscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Patikel/Hypothesen erzeugt.
+	Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. Daher werden jene Partikel gel\"oscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Partikel/Hypothesen erzeugt.
 	
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
@@ -200,6 +200,8 @@ Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensori
 		\includegraphics[trim=9cm 1cm 7cm 1cm , clip= true,width=\textwidth]{pictures/node_graph.png}
 		\caption{Vernetzung der \textit{Nodes} im Testaufbau}
 	\end{figure*}
+	
+	
 	
 	 Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.	
 	
@@ -319,12 +321,13 @@ Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
 
 \section{Zusammenfassung und Ausblick}
 
-Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Mit einem mobilen Frauenhofer-Roboter wird mittels gMapping eine 2D-Karte erstellt. Die Karte dient dem Roboter sich mit AMCL orientieren, in dem Sensordaten mit Wahrscheinlichkeitsvariablen der Karte verglichen werden. In verschiedenen Vorg\"angen f\"ahrt der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkte ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt.
+Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Mit einem mobilen Frauenhofer-Roboter wird mittels gMapping eine 2D-Karte erstellt. Die Karte dient dem Roboter sich mit AMCL orientieren, in dem Sensordaten mit Wahrscheinlichkeitsvariablen der Karte verglichen werden. In verschiedenen Vorg\"angen f\"ahrt der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. 
 \\
 \\
 Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen stellen bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 \\
 \\
+Da Odometrie unabh\"angig von seiner Umgebung einen Pfad verfolgt, ist AMCL 
 Es zeigt sich das Odometrie schlechter als AMCL ist.
 
 Als weiteres ist geplant...
