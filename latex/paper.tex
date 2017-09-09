@@ -93,13 +93,17 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 
 
 \section{Einleitung}
-Autonome Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese sich lokalisieren k\"onnen und einem Pfad folgen braucht es verschiedene Algorithmen.
-Zur Lokalisierung kann der AMCL-Algorithmus von XYZ in Paper zx beschrieben werden verwendet werden. Dieser benötigt jedoch eine Karte welche mit dem SLAM-Gmapping Algo von XYZ im Paper xyz beschrieben wird. Für die Pfadverfolgung kann der Algorithmus von giovanni xyz im Paper xyz beschrieben genutzt werden. 
+	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverlässig und sicher fahren können braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer simplen Roboter-Plattform mit Laserscanner untersucht. 
 
-Die drei Algorithmen werden im Abschnitt 1) genauer erläutert. Dann folgt eine kurze Beschreibung unserer Testplattform und dem Robot Operating System. Im Abschnitt 3) finden sich Test-Ergebnisse wie gut die Algorithmen funktionieren. 
+	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der s \textit{Adaptive Monte Carlo Localization}-Algorithmus von XYZ im Paper zx vorgestellt verwendet werden. 
+	
+	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-Gmapping}-Algorithmus generiert werden. Dieser löst dass Problem der gleichzeitigen Lokalisation und Kartierung durch die Nutzung des Laserscanners schon bei der Lokalisation und nicht erst bei der Kartiertung.
+	
+	Mit einer guten Lokalisation ist es m\"oglich einem Pfad zu folgen. Dafür hat Giovanni Indiveri den XYZ Algorithmus im Paper zxy beschrieben entwickelt. 
+
+
+	Die drei Algorithmen werden im Abschnitt 2 genauer erkl\"art. Im Abschnitt 3 folgt eine kurze Beschreibung unserer Testplattform und dem \textit{Robot Operating System}. Die Test-Ergebnisse werden im Abschnitt 4 vorgestellt und disskutiert.
   
-Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
-
 \newpage
 
 \section{Algorithmen}
