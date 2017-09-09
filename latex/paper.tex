@@ -181,6 +181,7 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 \section{Test-Plattform}
 \subsection{ROS}
 
+
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
 
 \begin{figure}[h]
@@ -191,8 +192,20 @@ F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Opera
 Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren. \cite{rosConcepts}
 
 Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
+\subsection{Hardware}
 
-\subsection{Aufbau der Testplattform}
+Die benutzen Roboter haben and der Front einen SICK LMS100 Laserscanner auf einer Höhe von etwa 35 cm motiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
+
+Etwas zu den Motoren schreiben 
+
+\begin{figure}[h]
+	\centering
+	{\includegraphics[trim= 2cm 2cm 2cm 2cm, clip=true,width=\linewidth]{pictures/robot.jpg}}
+	\caption{Einer der verwendeten Roboter}
+\end{figure}
+
+
+\subsection{Genutzte Nodes}
 {
 	
 	
