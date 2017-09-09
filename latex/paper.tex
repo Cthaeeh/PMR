@@ -93,7 +93,7 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 
 
 \section{Einleitung}
-Autonome Fahrzeuge sind ein großes Thema der Zukunft. Damit diese sich lokalisieren können und einem Pfad folgen braucht es verschiedene Algorithmen.
+Autonome Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese sich lokalisieren k\"onnen und einem Pfad folgen braucht es verschiedene Algorithmen.
 Zur Lokalisierung kann der AMCL-Algorithmus von XYZ in Paper zx beschrieben werden verwendet werden. Dieser benötigt jedoch eine Karte welche mit dem SLAM-Gmapping Algo von XYZ im Paper xyz beschrieben wird. Für die Pfadverfolgung kann der Algorithmus von giovanni xyz im Paper xyz beschrieben genutzt werden. 
 
 Die drei Algorithmen werden im Abschnitt 1) genauer erläutert. Dann folgt eine kurze Beschreibung unserer Testplattform und dem Robot Operating System. Im Abschnitt 3) finden sich Test-Ergebnisse wie gut die Algorithmen funktionieren. 
@@ -140,16 +140,6 @@ Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorste
 	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung, auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte in Gitter unterteilt, in dem jedes Quadrat mit einer Wahrscheinlichkeit aussagt, ob es belegt ist oder nicht. Die Variablen stellen also Objekte in der Umgebung dar. Algorithmen, wie AMCL, werten die Zufallsvariablen aus. 
 	\\ 
 	\\
-\begin{figure}[h]
-	\centering
-	\subcaptionbox{fehlerhafte Karte}{
-		\includegraphics[width=0.45\textwidth]{pictures/firstMap.jpeg}}
-	\subcaptionbox{korrekte Karte}{
-		\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
-	\caption{Karten aufgezeichnet mit Gmapping}
-\end{figure}
-
-
 
 \subsection{Pfadverfolgung mit Giovanni-Controller}
 
@@ -200,7 +190,13 @@ Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensori
 
 \subsection{Aufbau der Testplattform}
 {
-	 Bild des Graphen einfügen wie Jonas
+	
+	
+	\begin{figure*}[h]
+		\includegraphics[trim=9cm 1cm 7cm 1cm , clip= true,width=\textwidth]{pictures/node_graph.png}
+		\caption{Vernetzung der \textit{Nodes} im Testaufbau}
+	\end{figure*}
+	
 	 Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.	
 	
 	
@@ -222,7 +218,7 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{Mit einer Geschwindigkeit $\leq$ 2km/h}{\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}}\par\medskip
+	\subcaptionbox{Mit einer Geschwindigkeit $\leq$ 0.8m/s}{\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}}\par\medskip
 	\caption{ Odometrie und AMCL im Vergleich. }
 \end{figure}
 
@@ -245,6 +241,14 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 {
 	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/s (halbe Schrittgeschwindigkeit) abzufahren. 
 	
+	\begin{figure}[h]
+		\centering
+		\subcaptionbox{fehlerhafte Karte}{
+			\includegraphics[width=0.45\textwidth]{pictures/firstMap.jpeg}}
+		\subcaptionbox{korrekte Karte}{
+			\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
+		\caption{Karten aufgezeichnet mit Gmapping}
+	\end{figure}
 	
 	
 	Deutliche Unterschiede sind in den Karten von Figure 4 zu erkennen. Bild (a) zeigt eine Karte, die im ersten Versuch aufgenommen ist und aus Unwissenheit mit zu hoher Geschwindigkeit und nicht oft genug abgefahren ist. Im Vergleich dazu ist die Karte (b) durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien.
@@ -280,9 +284,9 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit}{
+	\subcaptionbox{niedrige Geschwindigkeit 0,714m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit  3.2 m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
@@ -290,9 +294,9 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit}{
+	\subcaptionbox{niedrige Geschwindigkeit 0,714m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit  3.2 m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_fast.jpg}}
 	\caption{Pfadverfolgung mit AMCL}
 \end{figure}
@@ -301,24 +305,29 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal in niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
 
 
-Geschwindigkeit langsam: 20   5cm Genauigkeit
-				schnell: 90	  20cm 
+Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
+				schnell: 90	 3.2 m/s   20cm 
+				
+			
+				
 				 
 
 
 \section{Zusammenfassung und Ausblick}
 
-Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Mit einem mobilen Frauenhofer-Roboter wird mittels gmapping eine 2D-Karte erstellt. Mit Hilfe der Karte kann sich der Roboter mit AMCL orientieren, in dem Sensordaten mit Wahrscheinlichkeitsvariablen der Karte verglichen werden. In verschiedenen Vorg\"angen f\"ahrt der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkte ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt.
-
-Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen stellen bei der Kartierung keine Probleme dar und werden nicht in der Darstellung Ber\"ucksichtigt. 
-
-
+Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Mit einem mobilen Frauenhofer-Roboter wird mittels gMapping eine 2D-Karte erstellt. Die Karte dient dem Roboter sich mit AMCL orientieren, in dem Sensordaten mit Wahrscheinlichkeitsvariablen der Karte verglichen werden. In verschiedenen Vorg\"angen f\"ahrt der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkte ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt.
+\\
+\\
+Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen stellen bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
+\\
+\\
 Es zeigt sich das Odometrie schlechter als AMCL ist.
 
+Als weiteres ist geplant...
 
 
 \section{Danksagung}
-Die Autoren danken Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und RobotOperatingSystem.
+Die Autoren danken Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
 
 \newpage
 {%\small                   % use small if you need it
@@ -326,6 +335,11 @@ Die Autoren danken Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen P
 	\bibliography{paper.bib}       % use a bib-file paper.bib to collect
 
 \end{document}
+
+
+
+
+
 
 
 
