@@ -92,7 +92,14 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 
 
 \section{Einleitung}
+Autonome Fahrzeuge sind ein großes Thema der Zukunft. Damit diese sich lokalisieren können und einem Pfad folgen braucht es verschiedene Algorithmen.
+Zur Lokalisierung kann der AMCL-Algorithmus von XYZ in Paper zx beschrieben werden verwendet werden. Dieser benötigt jedoch eine Karte welche mit dem SLAM-Gmapping Algo von XYZ im Paper xyz beschrieben wird. Für die Pfadverfolgung kann der Algorithmus von giovanni xyz im Paper xyz beschrieben genutzt werden. 
+
+Die drei Algorithmen werden im Abschnitt 1) genauer erläutert. Dann folgt eine kurze Beschreibung unserer Testplattform und dem Robot Operating System. Im Abschnitt 3) finden sich Test-Ergebnisse wie gut die Algorithmen funktionieren. 
+  
 Um das überaus komplexe Thema verst\"andlicher zu machen und Algorithmen vorstellbar zu erkl\"aren, wird im folgenden ein Fraunhofer-Roboter benutzt, der anhand Odometrie,... sich selbst\"andig in einem bekannten Raum zurechtfinden kann.
+
+
 
 \section{ROS}
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
