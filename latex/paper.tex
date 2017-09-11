@@ -259,7 +259,11 @@ Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahr
 
 Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
 
-
+\begin{figure}[h]
+	\centering
+	{\includegraphics[width=\linewidth]{pictures/amcl_fail.png}}
+	\caption{ Auch AMCL ist nicht perfekt }
+\end{figure}
 
 
 
@@ -287,12 +291,18 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 
 
-\subsection{Test und Implementierung von \texttt{gio\_path} auf einem realen Roboter}
-Zun\"achst wird die Pfadverfolgung simuliert. Der Robotersimulator wird in ROS-Nodes organisiert und soll vorgebene Pfaddateien abfahren.
-\\
-\\
+\subsection{Test und Implementierung von \texttt{gio\_path}}
+
+Zun\"achst wird die Pfadverfolgung simuliert um zu sehen ob sie überhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
+
+\begin{figure}[h]
+	
+	\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
+	\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}
+	\caption{Simulierte Pfadverfolgung}
+\end{figure}
+
 Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
-\\
 
 
 \begin{algorithm}
