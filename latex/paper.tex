@@ -2,6 +2,8 @@
 \usepackage{bbm,amsthm,amsfonts,amssymb,amsmath,latexsym,epic,eepic}
 \usepackage{marvosym,graphicx,fancyhdr,bbm}
 \usepackage{graphicx}
+\usepackage{gensymb}
+\usepackage{url}
 \usepackage{color}
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
@@ -64,7 +66,7 @@
 
 \begin{document}\sloppy
 
-\title{\Large\bf Vergleich der Pfadverfolgung mit Odometrie und AMCL \footnotetext{Diese Arbeit ist Bestandteil des Praktikums zur Mess- und Regelungstechnik}}
+\title{\Large\bf Test von Algorithmen zur Lokalisation, Kartierung und Pfadverfolgung \footnotetext{Diese Arbeit ist Bestandteil des Praktikums zur Mess- und Regelungstechnik}}
 
 \author{Kai Hofmann und Barbara Fischbach\\
   Robotik und Telematik \\
@@ -94,9 +96,9 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 
 
 \section{Einleitung}
-	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverlässig und sicher fahren können braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer simplen Roboter-Plattform mit Laserscanner untersucht. 
+	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer simplen Roboter-Plattform mit Laserscanner untersucht. 
 
-	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der s \textit{Adaptive Monte Carlo Localization}-Algorithmus von XYZ im Paper zx vorgestellt verwendet werden. 
+	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der \textit{Adaptive Monte Carlo Localization}-Algorithmus von XYZ im Paper zx vorgestellt verwendet werden. 
 	
 	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-Gmapping}-Algorithmus generiert werden. Dieser löst dass Problem der gleichzeitigen Lokalisation und Kartierung durch die Nutzung des Laserscanners schon bei der Lokalisation und nicht erst bei der Kartiertung.
 	
@@ -193,12 +195,21 @@ F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Opera
 Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren. \cite{rosConcepts}
 
 Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
+
 \subsection{Hardware}
 
 Die benutzten Roboter haben an der Front einen SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
  
 Zur Verf\"ugung stehen drei Roboter. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung können Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
   
+Die Algorithmen wurde auf drei verschiedenen Robotern gestestet, die sich jedoch im Aufbau gleichen.
+ 
+Sie werden über ein Differentialantrieb gesteuert. Dazu werden 2 feststehende Antriebsr\"ader verwendet. Es ist den Robotern also theoretisch möglich sich auf der Stelle zu drehen.
+
+Bei allen benutzten Roboter ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
+ 
+ROS läuft auf einem handelsüblichen Notebook, dass auf den Roboter gestellt wird und über LAN und USB mit dem Roboter verbunden ist. 
+ 
 
 \begin{figure}[h]
 	\centering
@@ -253,7 +264,11 @@ Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahr
 
 Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
 
-
+\begin{figure}[h]
+	\centering
+	{\includegraphics[width=\linewidth]{pictures/amcl_fail.png}}
+	\caption{ Auch AMCL ist nicht perfekt }
+\end{figure}
 
 
 
@@ -281,14 +296,18 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 
 
-\subsection{Test und Implementierung von \texttt{gio\_path} auf einem realen Roboter}
-Zun\"achst wird die Pfadverfolgung simuliert. Der Robotersimulator wird in ROS-Nodes organisiert und soll vorgebene Pfaddateien abfahren.
+\subsection{Test und Implementierung von \texttt{gio\_path}}
 
-Simulation einfügen.. wie aufgebaut 
-\\
-\\
+Zun\"achst wird die Pfadverfolgung simuliert um zu sehen ob sie überhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
+
+\begin{figure}[h]
+	
+	\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
+	\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}
+	\caption{Simulierte Pfadverfolgung}
+\end{figure}
+
 Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
-\\
 
 
 \begin{algorithm}
@@ -307,9 +326,9 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit 0,714m/s}{
+	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit  3.2 m/s}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit $\approx$ 3.2 m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
@@ -317,9 +336,9 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit 0,714m/s}{
+	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit  3.2 m/s}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit  $\approx$ 3.2 m/s}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_fast.jpg}}
 	\caption{Pfadverfolgung mit AMCL}
 \end{figure}
