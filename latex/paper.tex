@@ -6,6 +6,7 @@
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
 \usepackage{subcaption}
+\usepackage{url}
 \usepackage[vlined, ruled, boxed]{algorithm2e}
 \definecolor{Grey}{rgb}{0.5,0.5,0.5}
 \definecolor{Red}{rgb}{1.0,0.0,0.0}
@@ -195,13 +196,14 @@ Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensori
 \subsection{Hardware}
 
 Die benutzten Roboter haben an der Front einen SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
-
-Etwas zu den Motoren schreiben 
+ 
+Zur Verf\"ugung stehen drei Roboter. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung können Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
+  
 
 \begin{figure}[h]
 	\centering
 	{\includegraphics[trim= 2cm 2cm 2cm 2cm, clip=true,width=\linewidth]{pictures/robot.jpg}}
-	\caption{Einer der verwendeten Roboter}
+	\caption{\textit{Ute} - Einer der verwendeten Roboter}
 \end{figure}
 
 
@@ -281,6 +283,8 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 \subsection{Test und Implementierung von \texttt{gio\_path} auf einem realen Roboter}
 Zun\"achst wird die Pfadverfolgung simuliert. Der Robotersimulator wird in ROS-Nodes organisiert und soll vorgebene Pfaddateien abfahren.
+
+Simulation einfügen.. wie aufgebaut 
 \\
 \\
 Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
@@ -335,16 +339,17 @@ Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
 \section{Zusammenfassung und Ausblick}
 
 
-Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Die anfangs formulierten Ziele wurden erf\"ullt. Mit dem ROS Package kann der Roboter \"uber Eingabesysteme gesteuert werden. Mittels gMapping ist die Erstellung einer 2D-Karte m\"oglich. Nach Belieben kann der Roboter sich mit AMCL-Daten oder Odometriedaten lokalisieren. 
+Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Die anfangs formulierten Ziele wurden erf\"ullt. Mit dem ROS Package kann der Roboter \"uber Eingabesysteme gesteuert werden. Mittels \textit{GMapping} ist die Erstellung einer 2D-Karte m\"oglich. Nach Belieben kann der Roboter sich mit AMCL-Daten oder Odometriedaten lokalisieren. 
 
-In verschiedenen Vorg\"angen wurden die Algorithmen und Systeme getestet und haben keine \"Uberraschenden Ergebnisse geliefert. 
-Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algoritmus des Giovanni Indiverdi korrekt funktioniert.
+In verschiedenen Vorg\"angen wurden die Algorithmen und Systeme getestet und haben keine \"uberraschenden Ergebnisse geliefert. 
+Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
 \\
 \\
-Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen stellen bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
+Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 \\
 \\
-F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, durch Angabe pr\"azisere Reifengr"o{\ss}en..
+F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, durch Angabe pr\"azisere Reifengr\"o{\ss}en..
+\\
 Neuronales Netz 
 
 
