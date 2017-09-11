@@ -197,18 +197,15 @@ Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen B
 Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
 
 \subsection{Hardware}
-
-Die benutzten Roboter haben an der Front einen SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
  
 Zur Verf\"ugung stehen drei Roboter. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung k\"onnen Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
-  
-Die Algorithmen wurde auf drei verschiedenen Robotern gestestet, die sich jedoch im Aufbau gleichen.
+Da sich die Roboter im Aufbau und in der Betriebsweise gleichen, können die Algorithmen auf allen gleich gut getestet werden.
  
-Sie werden \"uber ein Differentialantrieb gesteuert. Dazu werden 2 feststehende Antriebsr\"ader verwendet. Es ist den Robotern also theoretisch möglich sich auf der Stelle zu drehen.
+Die Steuerung erfolgt \"uber ein Differentialantrieb. Dazu werden zwei feststehende Antriebsr\"ader verwendet. Dadurch wird dem Roboter erm\"oglicht, sich auf der Stelle zu drehen.
 
-Bei allen benutzten Roboter ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
+Bei allen verwendeten Robotern ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
  
-ROS l\"auft auf einem handels\"ublichen Notebook, dass auf den Roboter gestellt wird und \"uber LAN und USB mit dem Roboter verbunden ist. 
+ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt wird und \"uber LAN und USB mit dem Roboter verbunden ist. 
  
 
 \begin{figure}[h]
@@ -238,9 +235,9 @@ ROS l\"auft auf einem handels\"ublichen Notebook, dass auf den Roboter gestellt 
 \subsection{Odometrie und AMCL im Vergleich}
 
 
-Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 	
+Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 	
 
-Es kann passieren dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realit\"at \"uberein verteilt er die Partikel \"uberall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
+Es kann passieren, dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realit\"at \"uberein, verteilt er die Partikel \"uberall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
 
 Probleme oder eine l\"angere Lokalisierungsdauer treten auch auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
 
@@ -255,11 +252,10 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 
 
-Im Experiment startet der Roboter im Ursprung und bereits zu Beginn kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+Im Experiment startet der Roboter im Ursprung und bereits zu Beginn der Durchf\"uhrung kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
 
 
-Nachteil AMCL: benö
-tigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
+Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
 
 Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
 
@@ -296,20 +292,27 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 \subsection{Test und Implementierung von \texttt{gio\_path}}
 
+
 Zun\"achst wird die Pfadverfolgung simuliert, um zu sehen ob sie \"uberhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
 
+
 \begin{figure}[h]
-	
-	\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
-	\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}
-	\caption{Simulierte Pfadverfolgung}R
+	\subcaptionbox{Verfolgung eines spiralf\"ormigen Pfades\label{fig:simulatedSpiral}}{
+		\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
+		
+	}
+	\subcaptionbox{Verfolgung eines Acht-f\"ormigen Pfades}{
+		\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}}
+	\caption{Simulierte Pfadverfolgung}
+
 \end{figure}
+Es zeigt sich, dass der Giovanni-Controller nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen.  
 
-Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
 
+\newpage
+Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert wie folgt den Roboter: 
 
 \begin{algorithm}
-	
 	pathDone $\leftarrow$ false\;
 	rightSpeed $\leftarrow$ 0.0\;
 	leftSpeed $\leftarrow$ 0.0\;
@@ -319,18 +322,26 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 		pathDone = controller.getNextState(leftSpeed, rightSpeed)\;
 		publishToMotors(leftSpeed, rightSpeed);
 	}
-\caption{Giovanni Controller Implementation}
+\caption{\textit{Giovanni Controller} Implementation}
 \end{algorithm}
 
-\begin{figure}[h]
+Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter/ niedriger Geschwindigkeit.
+
+Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern zu tracken, wird f\"ur die Analyse der Pfadverfolgung mit Odometrie \textit{AMCL} als "Wahrheit" verwendet.
+\newpage
+\begin{figure}
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s}{
+	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s \label{fig:odoLowSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit $\approx$ 3.2 m/s}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit $\approx$ 3.2 m/s\label{fig:odoHighSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
 
+Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschindigkeit ($\approx$ 0,714 m/s ) mit weniger als $\approx$ 30cm Abweichung funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abbweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was man auch bei der Simulation sehen kann. Außerdem macht die Odometrie Fehler. Man erkennt zum Beispiel dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
+Bei einer erhöhten Geschwindigkeit von $\approx$ 3.2 m/s fährt der Roboter deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran dass die R\"ader, des Roboters vor allem in Kurven durch drehen.   
+
+\newpage  
 
 \begin{figure}[h]
 	\centering
@@ -341,16 +352,10 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 	\caption{Pfadverfolgung mit AMCL}
 \end{figure}
 
+Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann, wird bei AMCL der Pfad zum Ausgangspunkt zur\"uck verl\"angert. In dem die Startposition auf dem Boden markiert wird, erkennt man die Pr\"azession mit der Roboter beziehungsweise der Algorithmus arbeitet.
+In beiden F\"allen ist mit einer Genauigkeit von unter 20 cm zu rechnen. Der schneller abgefahrene Pfad weist allein geometrisch gr\"o{\ss}ere Abweichungen vom vorgegebenen Pfad auf, als der langsam abgefahrene. 
+Dies liegt vermutlich daran, dass die Sample-Time von AMCL bei der erh\"ohten Geschwindigkeit  von $\approx$ 3.2 m/s nicht mehr ausreicht und so Abweichungen auftereten, bevor der Controller diese korregieren kann. 
 
-Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal in niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
-
-
-Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
-				schnell: 90	 3.2 m/s   20cm 
-				
-			
-				
-				 
 
 
 \section{Zusammenfassung und Ausblick}
@@ -367,17 +372,18 @@ Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel i
 \\
 F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
 \\
-Neuronale Netze erm\"oglichen durch pr\"azisse Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
+Neuronale Netze erm\"oglichen durch pr\"azise Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
 
 
 \section{Danksagung}
-Die Autoren danken Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
+Die Autoren danken dem HiWi Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
 
 \newpage
 {%\small                   % use small if you need it
 	\bibliographystyle{plain}
 	\bibliography{paper.bib}       % use a bib-file paper.bib to collect
 
+}
 \end{document}
 
 
