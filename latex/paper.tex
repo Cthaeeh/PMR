@@ -194,7 +194,7 @@ Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen B
 Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
 \subsection{Hardware}
 
-Die benutzen Roboter haben and der Front einen SICK LMS100 Laserscanner auf einer Höhe von etwa 35 cm motiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
+Die benutzten Roboter haben an der Front einen SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270° und eine Reichweite von 20 Metern. 
 
 Etwas zu den Motoren schreiben 
 
@@ -334,16 +334,18 @@ Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
 
 \section{Zusammenfassung und Ausblick}
 
-Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Mit einem mobilen Frauenhofer-Roboter wird mittels gMapping eine 2D-Karte erstellt. Die Karte dient dem Roboter sich mit AMCL orientieren, in dem Sensordaten mit Wahrscheinlichkeitsvariablen der Karte verglichen werden. In verschiedenen Vorg\"angen f\"ahrt der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. 
+
+Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Die anfangs formulierten Ziele wurden erf\"ullt. Mit dem ROS Package kann der Roboter \"uber Eingabesysteme gesteuert werden. Mittels gMapping ist die Erstellung einer 2D-Karte m\"oglich. Nach Belieben kann der Roboter sich mit AMCL-Daten oder Odometriedaten lokalisieren. 
+
+In verschiedenen Vorg\"angen wurden die Algorithmen und Systeme getestet und haben keine \"Uberraschenden Ergebnisse geliefert. 
+Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algoritmus des Giovanni Indiverdi korrekt funktioniert.
 \\
 \\
 Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen stellen bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 \\
 \\
-Da Odometrie unabh\"angig von seiner Umgebung einen Pfad verfolgt, ist AMCL 
-Es zeigt sich das Odometrie schlechter als AMCL ist.
-
-Als weiteres ist geplant...
+F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, durch Angabe pr\"azisere Reifengr"o{\ss}en..
+Neuronales Netz 
 
 
 \section{Danksagung}
