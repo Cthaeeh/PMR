@@ -89,43 +89,42 @@
 
 \addcontentsline{toc}{section}{Abstract}
 
-\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.}
-
-Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme autonom funktionieren, sondern auch auf der Erde, um Systeme sicherer und bequemer f\"ur den Benutzer zu machen. 
-
+\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.} 
 
 \section{Einleitung}
 	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer simplen Roboter-Plattform mit Laserscanner untersucht. 
 
-	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der \textit{Adaptive Monte Carlo Localization}-Algorithmus von XYZ im Paper zx vorgestellt verwendet werden. 
+	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der \textit{Adaptive Monte Carlo Localization}-Algorithmus, von Dieter Fox im Paper \textit{KLD-Sampling: Adaptive Particle Filters} \cite{amclPaper} vorgestellt, verwendet werden. 
 	
-	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-Gmapping}-Algorithmus generiert werden. Dieser löst dass Problem der gleichzeitigen Lokalisation und Kartierung durch die Nutzung des Laserscanners schon bei der Lokalisation und nicht erst bei der Kartiertung.
+	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-Gmapping}-Algorithmus von Giorgio Grisetti generiert werden. Der Algorithmus wird im Paper \textit{Improved Techniques for Grid Mapping
+	with Rao-Blackwellized Particle Filters} \cite{Gmapping} besprochen. Dieser l\"ost dass Problem der gleichzeitigen Lokalisation und Kartierung durch die Nutzung des Laserscanners schon bei der Lokalisation und nicht erst bei der Kartiertung. 
 	
-	Mit einer guten Lokalisation ist es m\"oglich einem Pfad zu folgen. Dafür hat Giovanni Indiveri den XYZ Algorithmus im Paper zxy beschrieben entwickelt. 
+	Mit einer guten Lokalisation ist es m\"oglich einem Pfad zu folgen. Dafür hat Giovanni Indiveri einen Algorithmus, im Paper \textit{SWITCHING
+	LINEAR PATH FOLLOWING FOR
+	BOUNDED CURVATURE CAR-LIKE
+	VEHICLES} \cite{Giovanni} beschrieben, entwickelt. 
 
-
-	Die drei Algorithmen werden im Abschnitt 2 genauer erkl\"art. Im Abschnitt 3 folgt eine kurze Beschreibung unserer Testplattform und dem \textit{Robot Operating System}. Die Test-Ergebnisse werden im Abschnitt 4 vorgestellt und disskutiert.
+	Die drei Algorithmen werden im Abschnitt 2 genauer erkl\"art. Im Abschnitt 3 folgt eine kurze Beschreibung unserer Testplattform und dem verwendeten \textit{Robot Operating System}. Die Test-Ergebnisse werden im Abschnitt 4 vorgestellt und disskutiert.
   
-\newpage
 
 \section{Algorithmen}
 
 \subsection{Lokalisation}
 \subsubsection{Odometrie}
 {
-	Die Odometrie beruht auf einer relativen Positionsbestimmung, dabei wird aus der vorher bekannten Position des Roboters und der zur\"uckgelegten Weg-strecke die neue Position berechnet. Die vermutliche Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feed back über die Position gibt ist das eine "Open loop". 
+	Die Odometrie ist eine einfache Möglichkeit der relativen Positionsbestimmung und bildet die Grundlage für anspruchsvollere Algorithmen wie \textit{AMCL}. Dabei wird aus der vorher bekannten Position des Roboters und der vermuteten zur\"uckgelegten Weg-strecke die neue Position berechnet. Die Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feedback über die Position gibt ist dies eine \textit{Open loop}. 
 }
-\subsubsection{Adaptive Monte Carlo Localization} \cite{mclWiki}
+\subsubsection{Adaptive Monte Carlo Localization \cite{mclWiki} \cite{amclPaper}} 
 {
 	Im folgenden als AMCL abgek\"urzt, ist ein Algorithmus der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen dar\"uber auf der Karte an, verteilt also die Partikel \"uber den Zustandsraum. Die anf\"angliche Verteilung auf der Karte kann verschieden sein. Es ist zum Beispiel m\"oglich diese  gleichm\"a{\ss}ig über die ganze Karte zu verteilen. 
-	Bei der von den Autoren verwendeten Implementation von AMCL ist sie Gau{\ss}-verteilt um eine gegebene anf\"angliche, gegebene Pose. Ist der Roboter tatsälich an einem anderen Ort, so hat er keine Chance sich zu lokalisieren. 
-
-\begin{figure}[h]
-	\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
-	\caption{Partikelverteilung in Anfangspose}
-\end{figure}
+	Bei der von den Autoren verwendeten Implementation ist sie Gau{\ss}-verteilt um eine gegebene anf\"angliche Pose, siehe Abbildung ~\ref{fig:initalParticleDistribution}. \begin{figure}[h]
+		\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
+		\caption{Partikelverteilung in Anfangspose \label{fig:initalParticleDistribution}}
+	\end{figure}
+	\newpage
+	Ist der Roboter tatsälich an einem anderen Ort, so hat er keine Chance sich zu lokalisieren. 
 	
-	Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte. Als reale Sensormesswerte werden die Messungen des Laserscanners verwendet.
+	Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte. Als reale Sensormesswerte werden die Messungen des Laserscanners verwendet. 
 	
 	Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. Daher werden jene Partikel gel\"oscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Partikel/Hypothesen erzeugt.
 	
@@ -135,13 +134,15 @@ Nicht nur im Weltall, wo wir unbedingt darauf angewiesen sind, dass Systeme auto
 \end{figure}
 		
 	Der virtuelle Roboter  mit besten den \"Ubereinstimmungen, ist die beste Estimation der Pose.
-	Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. Raus finden was adaptive bedeutet bei AMCL.		
+	Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. In diesem Fall kann die Anzahl der Partikel reduziert werden um Ressource zu sparen. Daher das \textit{Adaptive} aus \textit{AMCL}.
 }
 \newpage
-\subsection{Kartierung mit gmapping  \cite{gmapping}}
+\subsection{Kartierung mit gmapping  \cite{Gmapping}}
 {
 	Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
 	Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
+
+	\textbf{TODO hier weiter schreiben}
 
 	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung, auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte in Gitter unterteilt, in dem jedes Quadrat mit einer Wahrscheinlichkeit aussagt, ob es belegt ist oder nicht. Die Variablen stellen also Objekte in der Umgebung dar. Algorithmen, wie AMCL, werten die Zufallsvariablen aus. 
 	\\ 
@@ -188,18 +189,18 @@ F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Opera
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
-	\caption{Kommunikation zwischen Nodes}
+	\caption{Kommunikation zwischen Nodes \label{fig:rosNodes}}
 \end{figure}
 
-Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren. \cite{rosConcepts}
+Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
 
-Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes von anderen Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
+Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes anderer Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
 
 \subsection{Hardware}
 
 Die Algorithmen wurde auf drei verschiedenen Robotern gestestet, die sich jedoch im Aufbau gleichen.
  
-Sie werden über ein Differentialantrieb gesteuert. Dazu werden 2 feststehende Antriebsr\"ader verwendet. Es ist den Robotern also theoretisch möglich sich auf der Stelle zu drehen.
+Sie werden über ein Differentialantrieb gesteuert. Dazu werden 2 feststehende Antriebsr\"ader verwendet. Es ist den Robotern also theoretisch m\"oglich sich auf der Stelle zu drehen.
 
 Bei allen benutzten Roboter ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
  
@@ -216,7 +217,7 @@ ROS läuft auf einem handelsüblichen Notebook, dass auf den Roboter gestellt wi
 \subsection{Genutzte Nodes}
 {
 	
-	
+	\textbf{TODO bissle was zu den nodes schreiben + das bild fixen.}
 	\begin{figure*}[h]
 		\includegraphics[trim=9cm 1cm 7cm 1cm , clip= true,width=\textwidth]{pictures/node_graph.png}
 		\caption{Vernetzung der \textit{Nodes} im Testaufbau}
@@ -351,6 +352,7 @@ Bei einer erhöhten Geschwindigkeit von $\approx$ 3.2 m/s fährt der Roboter deu
 \end{figure}
 
 Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann wird bei AMCL der Pfad zum Ausgangspunkt zurück verlängert. Dann kann man sehen wie präzise dieser getroffen wird indem man diese Stelle auf dem Boden markiert und sieht ob der Roboter zu ihr zurück kehrt. Dass schaffte der Roboter bei beiden Geschwindigkeiten besser als 20 cm.
+
 Der schneller abgefahrene Pfad hat allein von der Geometrie her größere Abweichungen vom vorgegebenen Pfad als der langsam abgefahrene. 
 Dies liegt vermutlich daran dass die Sample-Time von AMCL bei der erhöhten Geschwindigkeit  von $\approx$ 3.2 m/s nicht mehr ausreicht und so Abweichungen auftereten bevor der Controller diese korregieren kann. 
 
