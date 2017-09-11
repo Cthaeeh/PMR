@@ -293,20 +293,24 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 \subsection{Test und Implementierung von \texttt{gio\_path}}
 
-Zun\"achst wird die Pfadverfolgung simuliert um zu sehen ob sie überhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
+Zun\"achst wird die Pfadverfolgung simuliert um zu sehen ob sie überhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren. 
 
 \begin{figure}[h]
-	
-	\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
-	\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}
+	\subcaptionbox{Verfolgung eines spiralf\"ormigen Pfades\label{fig:simulatedSpiral}}{
+		\includegraphics[width=\linewidth]{pictures/simulated_spirale.jpg}
+		
+	}
+	\subcaptionbox{Verfolgung eines Acht-f\"ormigen Pfades}{
+		\includegraphics[width=\linewidth]{pictures/simulated_acht.jpg}}
 	\caption{Simulierte Pfadverfolgung}
 \end{figure}
+Es zeigt sich dass der Gioanni-Controller nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen.  
 
-Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern.
 
+\newpage
+Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert wie folgt den Roboter: 
 
 \begin{algorithm}
-	
 	pathDone $\leftarrow$ false\;
 	rightSpeed $\leftarrow$ 0.0\;
 	leftSpeed $\leftarrow$ 0.0\;
@@ -316,18 +320,26 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 		pathDone = controller.getNextState(leftSpeed, rightSpeed)\;
 		publishToMotors(leftSpeed, rightSpeed);
 	}
-\caption{Giovanni Controller Implementation}
+\caption{\textit{Giovanni Controller} Implementation}
 \end{algorithm}
 
-\begin{figure}[h]
+Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input für \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erhöhter / niedriger Geschwindigkeit.
+
+Da die Autoren leider keine Möglichkeit haben die Position des Roboters extern zu tracken, wird für die Analyse der Pfadverfolgung mit Odometrie \textit{AMCL} als "Wahrheit" verwendet.
+\newpage
+\begin{figure}
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s}{
+	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s \label{fig:odoLowSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit $\approx$ 3.2 m/s}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit $\approx$ 3.2 m/s\label{fig:odoHighSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_odometry_fast.jpg}}
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
 
+Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschindigkeit ($\approx$ 0,714 m/s ) mit weniger als $\approx$ 30cm Abweichung funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abbweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was man auch bei der Simulation sehen kann. Außerdem macht die Odometrie Fehler. Man erkennt zum Beispiel dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
+Bei einer erhöhten Geschwindigkeit von $\approx$ 3.2 m/s fährt der Roboter deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran dass die R\"ader, des Roboters vor allem in Kurven durch drehen.   
+
+\newpage  
 
 \begin{figure}[h]
 	\centering
@@ -338,16 +350,10 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 	\caption{Pfadverfolgung mit AMCL}
 \end{figure}
 
+Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann wird bei AMCL der Pfad zum Ausgangspunkt zurück verlängert. Dann kann man sehen wie präzise dieser getroffen wird indem man diese Stelle auf dem Boden markiert und sieht ob der Roboter zu ihr zurück kehrt. Dass schaffte der Roboter bei beiden Geschwindigkeiten besser als 20 cm.
+Der schneller abgefahrene Pfad hat allein von der Geometrie her größere Abweichungen vom vorgegebenen Pfad als der langsam abgefahrene. 
+Dies liegt vermutlich daran dass die Sample-Time von AMCL bei der erhöhten Geschwindigkeit  von $\approx$ 3.2 m/s nicht mehr ausreicht und so Abweichungen auftereten bevor der Controller diese korregieren kann. 
 
-Die Autoren entscheiden sich als Testpfad eine Spirale zu nutzen. Die Datei enth\"alt Punkte in spiralf\"ormiger, eckiger Anordnung. In dem Vergleich wird der Pfad zweimal abgefahren, einmal in niedriger und einmal hoher Geschwindigkeit. Zu Beobachten ist, dass AMCL bei geringer Geschwindigkeit exakt arbeitet und die Punkte nur auf wenige Zentimeter verfehlt. Bei erh\"oter Geschwindigkeit ist eine Spirale nicht mehr zu erkennen. Die Odometrie zeichnet in beiden F\"allen eine korrekte Spirale auf. Der Grund ist, dass Odometrie unabh\"angig der Umgebung, also ohne Karte, arbeitet und trotz optisch fehlerhaften Pfad die Punkte korrekt skizziert.
-
-
-Geschwindigkeit langsam: 20  0,714m/s  5cm Genauigkeit
-				schnell: 90	 3.2 m/s   20cm 
-				
-			
-				
-				 
 
 
 \section{Zusammenfassung und Ausblick}
@@ -367,7 +373,7 @@ Neuronales Netz
 
 
 \section{Danksagung}
-Die Autoren danken Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
+Die Autoren danken dem HiWi Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
 
 \newpage
 {%\small                   % use small if you need it
