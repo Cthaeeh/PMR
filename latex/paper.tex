@@ -92,6 +92,7 @@
 
 	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.}
 	
+	In diesem Paper werden einige dieser Algorithmen auf einem differential betriebenem Roboter auf Funktion und Genauigkeit getestet und best\"atigt, dass Pfadverfolgung sowohl mit AMCL als auch mit der schlechter einzustufenden Odometrie m\"oglich ist.\\
 	TODO einen Satz zu den Resultaten hinzufügen ? 
 
 \section{Einleitung}
@@ -115,7 +116,7 @@
 \subsection{Lokalisation}
 \subsubsection{Odometrie}
 {
-	Die Odometrie ist eine einfache Möglichkeit der relativen Positionsbestimmung und bildet die Grundlage f\"ur anspruchsvollere Algorithmen wie \textit{AMCL}. Dabei wird aus der vorher bekannten Position des Roboters und der vermuteten zur\"uckgelegten Weg-strecke die neue Position berechnet. Die Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feedback \"uber die Position gibt ist dies eine \textit{Open loop}. 
+	Die Odometrie ist eine einfache M\"oglichkeit der relativen Positionsbestimmung und bildet die Grundlage f\"ur anspruchsvollere Algorithmen wie \textit{AMCL}. Dabei wird aus der vorher bekannten Position des Roboters und der vermuteten zur\"uckgelegten Weg-strecke die neue Position berechnet. Die Wegstrecke wird \"uber die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feedback \"uber die Position gibt, ist dies ein \textit{Open loop}. 
 }
 \subsubsection{Adaptive Monte Carlo Localization \cite{mclWiki} \cite{amclPaper}} 
 {
@@ -125,11 +126,11 @@
 		\caption{Partikelverteilung in Anfangspose \label{fig:initalParticleDistribution}}
 	\end{figure}
 	\newpage
-	Ist der Roboter tatsälich an einem anderen Ort, so hat er keine Chance sich zu lokalisieren. 
+	Ist der Roboter tats\"achlich an einem anderen Ort, so hat er keine Chance sich zu lokalisieren. 
 	
 	Die Hypothesen kann man sich als virtuelle Roboter auf der Karte vorstellen. F\"ahrt der reale Roboter, so fahren auch die virtuellen Roboter, mit den gleichen Steuerungsbefehlen. Die realen Sensorwerte werden mit denen der virtuellen Robotern verglichen. Die virtuellen Roboter gewinnen ihre Sensormesswerte durch die Karte. Als reale Sensormesswerte werden die Messungen des Laserscanners verwendet. 
 	
-	Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese dass der reale sich dort befindet. Daher werden jene Partikel gel\"oscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Partikel/Hypothesen erzeugt.
+	Je unstimmiger die Daten des virtuellen Roboters sind, desto unwahrscheinlicher ist die Hypothese, dass der Reale sich dort befindet. Daher werden jene Partikel gel\"oscht. Im Bereich der wahrscheinlichen Hypothesen, werden neue Partikel/Hypothesen erzeugt.
 	
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/drive_little.jpg}
@@ -142,13 +143,13 @@
 \newpage
 \subsection{Kartierung mit gmapping  \cite{Gmapping}}
 {
-	Zur Lokalisation braucht der Roboters eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
+	Zur Lokalisation braucht der Roboter eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
 	
 	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung, auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte in Gitter unterteilt, in dem jedes Quadrat mit einer Wahrscheinlichkeit aussagt, ob es belegt ist oder nicht. Die Variablen stellen also Objekte in der Umgebung dar. Algorithmen, wie AMCL, werten die Zufallsvariablen aus.  
 	
 	Die Herausforderung liegt bei der Kartierung in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz \textit{SLAM}. Denn beide bedingen sich gegenseitig. Um  zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
     
-    Ein einfacher Ansatzt ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen die Laserscan daten verwendet. 
+    Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen die Laserscandaten verwendet. 
 
 \subsection{Pfadverfolgung mit Giovanni-Controller}
 
@@ -186,14 +187,14 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 \section{Test-Plattform}
 \subsection{ROS}
 
-F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
+F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinne, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
 	\caption{Kommunikation zwischen Nodes \label{fig:rosNodes}}
 \end{figure}
 
-Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander über ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
+Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander \"uber ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
 
 
 Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes anderer Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
@@ -201,7 +202,8 @@ Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensori
 \subsection{Hardware}
  
 Zur Verf\"ugung stehen drei Roboter mit Differentialantrieb. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung k\"onnen Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
-Da sich die Roboter im Aufbau und in der Betriebsweise gleichen, können die Algorithmen auf allen gleich gut getestet werden.
+Differentialantrieb ist ein Antrieb zweier unabh\"angiger R\"ader, die sich auf einer starren Achse befinden. Werden die R\"ader mit unterschiedlicher aber nicht nivellierender Geschwindigkeit angetrieben, f\"ahrt der Roboter eine Kurve. Sind die Geschwindigkeiten dagegen gleich, ist die resultierende Spur gerade.
+Da sich die Roboter im Aufbau und in der Betriebsweise gleichen, k\"onnen die Algorithmen auf allen gleich gut getestet werden.
 
 Bei allen verwendeten Robotern ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
  
@@ -294,7 +296,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 \subsection{Test und von \texttt{gio\_path}}
 
 
-Zun\"achst wird die Pfadverfolgung simuliert, um zu sehen ob sie \"uberhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
+Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmusauf theoretische Funktion zu testen. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
 
 
 \begin{figure}[h]
@@ -311,7 +313,7 @@ Es zeigt sich, dass der Giovanni-Controller nicht immer alle Punkte des Pfades p
 
 
 \newpage
-Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert wie folgt den Roboter: 
+Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird erneut eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert den Roboter wie folgt: 
 
 \begin{algorithm}
 	pathDone $\leftarrow$ false\;
@@ -326,9 +328,9 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 \caption{\textit{Giovanni Controller} Implementation}
 \end{algorithm}
 
-Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter/ niedriger Geschwindigkeit.
+Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter und niedriger Geschwindigkeit.
 
-Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern zu tracken, wird f\"ur die Analyse der Pfadverfolgung mit Odometrie \textit{AMCL} als "Wahrheit" verwendet.
+Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern zu verfolgen, wird f\"ur die Analyse der Pfadverfolgung mit Odometrie \textit{AMCL} als "Wahrheit" verwendet.
 \newpage
 \begin{figure}
 	\centering
@@ -339,8 +341,8 @@ Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
 
-Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschindigkeit ($\approx$ 0,714 m/s ) mit weniger als $\approx$ 30cm Abweichung funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abbweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was man auch bei der Simulation sehen kann. Außerdem macht die Odometrie Fehler. Man erkennt zum Beispiel dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
-Bei einer erhöhten Geschwindigkeit von $\approx$ 3.2 m/s fährt der Roboter deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran dass die R\"ader, des Roboters vor allem in Kurven durch drehen.   
+Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschwindigkeit ($\approx$ 0,714 m/s ) mit einer Abweichung von weniger als $\approx$ 30cm funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was auch bei der Simulation ersichtlich ist. Außerdem ist die Odometrie fehlerbehaftet. Man erkennt zum Beispiel, dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
+Bei einer erh\"ohten Geschwindigkeit von $\approx$ 3.2 m/s f\"ahrt der Roboter deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran, dass die R\"ader des Roboters vor allem in Kurven keinen Halt finden und durchdrehen.   
 
 \newpage  
 
@@ -362,7 +364,7 @@ Dies liegt vermutlich daran, dass die Sample-Time von AMCL bei der erh\"ohten Ge
 Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie, sowie Tests des \textit{Gmapping} Algorithmus und dem Pfadvefolgungsalgorithmus von Giovanni Indiveri. Die Tests wurden auf einer Roboterplattform mithilfe von \textit{ROS} durchgef\"uhrt. 
 
 Dabei gabe es keine \"uberraschenden Ergebnisse.
-Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell fährt. Aber auch AMCL hat Schwächen und macht für Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
+Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
 Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 
 Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
