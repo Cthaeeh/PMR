@@ -88,12 +88,14 @@
 
 \section*{Abstract}
 
-\addcontentsline{toc}{section}{Abstract}
+	\addcontentsline{toc}{section}{Abstract}
 
-\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.} 
+	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.}
+	
+	TODO einen Satz zu den Resultaten hinzufügen ? 
 
 \section{Einleitung}
-	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer simplen Roboter-Plattform mit Laserscanner untersucht. 
+	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer Roboter-Plattform mit Laserscanner untersucht. 
 
 	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der \textit{Adaptive Monte Carlo Localization}-Algorithmus, von Dieter Fox im Paper \textit{KLD-Sampling: Adaptive Particle Filters} \cite{amclPaper} vorgestellt, verwendet werden. 
 	
@@ -113,7 +115,7 @@
 \subsection{Lokalisation}
 \subsubsection{Odometrie}
 {
-	Die Odometrie ist eine einfache Möglichkeit der relativen Positionsbestimmung und bildet die Grundlage für anspruchsvollere Algorithmen wie \textit{AMCL}. Dabei wird aus der vorher bekannten Position des Roboters und der vermuteten zur\"uckgelegten Weg-strecke die neue Position berechnet. Die Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feedback über die Position gibt ist dies eine \textit{Open loop}. 
+	Die Odometrie ist eine einfache Möglichkeit der relativen Positionsbestimmung und bildet die Grundlage f\"ur anspruchsvollere Algorithmen wie \textit{AMCL}. Dabei wird aus der vorher bekannten Position des Roboters und der vermuteten zur\"uckgelegten Weg-strecke die neue Position berechnet. Die Wegstrecke wird über die Steuerungsbefehle und ein Modell des Roboters berechnet. Da es kein weiteres Feedback \"uber die Position gibt ist dies eine \textit{Open loop}. 
 }
 \subsubsection{Adaptive Monte Carlo Localization \cite{mclWiki} \cite{amclPaper}} 
 {
@@ -135,19 +137,18 @@
 \end{figure}
 		
 	Der virtuelle Roboter  mit besten den \"Ubereinstimmungen, ist die beste Estimation der Pose.
-	Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. In diesem Fall kann die Anzahl der Partikel reduziert werden um Ressource zu sparen. Daher das \textit{Adaptive} aus \textit{AMCL}.
+	Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. In diesem Fall kann die Anzahl der Partikel reduziert werden um Ressource, wie Speicherplatz zu sparen. Daher das \textit{Adaptive} aus \textit{AMCL}.
 }
 \newpage
 \subsection{Kartierung mit gmapping  \cite{Gmapping}}
 {
-	Die Lokalisation eines Roboters ben\"otigt eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
-	Die Herausforderung liegt dabei in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz SLAM. Denn beide bedingen sich gegenseitig. Um zum Beispiel zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
-
-	\textbf{TODO hier weiter schreiben}
-
-	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung, auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte in Gitter unterteilt, in dem jedes Quadrat mit einer Wahrscheinlichkeit aussagt, ob es belegt ist oder nicht. Die Variablen stellen also Objekte in der Umgebung dar. Algorithmen, wie AMCL, werten die Zufallsvariablen aus. 
-	\\ 
-	\\
+	Zur Lokalisation braucht der Roboters eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
+	
+	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung, auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte in Gitter unterteilt, in dem jedes Quadrat mit einer Wahrscheinlichkeit aussagt, ob es belegt ist oder nicht. Die Variablen stellen also Objekte in der Umgebung dar. Algorithmen, wie AMCL, werten die Zufallsvariablen aus.  
+	
+	Die Herausforderung liegt bei der Kartierung in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz \textit{SLAM}. Denn beide bedingen sich gegenseitig. Um  zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
+    
+    Ein einfacher Ansatzt ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen die Laserscan daten verwendet. 
 
 \subsection{Pfadverfolgung mit Giovanni-Controller}
 
@@ -184,7 +185,6 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 
 \section{Test-Plattform}
 \subsection{ROS}
-
 
 F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinn, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
 
@@ -234,10 +234,11 @@ ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt w
 \section{Test der Algorithmen} 
 \subsection{Odometrie und AMCL im Vergleich}
 
-
 Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 	
 
 Es kann passieren, dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realit\"at \"uberein, verteilt er die Partikel \"uberall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
+
+\textbf{TODO entweder bild dazu einfügen oder absatz weg}
 
 Probleme oder eine l\"angere Lokalisierungsdauer treten auch auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
 
@@ -262,7 +263,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 \begin{figure}[h]
 	\centering
 	{\includegraphics[width=\linewidth]{pictures/amcl_fail.png}}
-	\caption{ Auch AMCL ist nicht perfekt }
+	\caption{ Auch AMCL ist nicht perfekt \label{fig:amclFails}}
 \end{figure}
 
 
@@ -270,7 +271,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 \subsection{Test von Gmapping}
 {
-	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren. 
+	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
 	
 	\begin{figure}[h]
 		\centering
@@ -290,7 +291,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 
 
-\subsection{Test und Implementierung von \texttt{gio\_path}}
+\subsection{Test und von \texttt{gio\_path}}
 
 
 Zun\"achst wird die Pfadverfolgung simuliert, um zu sehen ob sie \"uberhaupt funktioniert. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
@@ -345,29 +346,27 @@ Bei einer erhöhten Geschwindigkeit von $\approx$ 3.2 m/s fährt der Roboter deu
 
 \begin{figure}[h]
 	\centering
-	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s}{
+	\subcaptionbox{niedrige Geschwindigkeit $\approx$ 0,714m/s \label{fig:amclLowSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_slow.jpg}}
-	\subcaptionbox{erh\"ohte Geschwindigkeit  $\approx$ 3.2 m/s}{
+	\subcaptionbox{erh\"ohte Geschwindigkeit  $\approx$ 3.2 m/s \label{fig:amclHighSpeed}}{
 		\includegraphics[width=0.45\textwidth]{pictures/path_amcl_fast.jpg}}
 	\caption{Pfadverfolgung mit AMCL}
 \end{figure}
 
-Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann, wird bei AMCL der Pfad zum Ausgangspunkt zur\"uck verl\"angert. In dem die Startposition auf dem Boden markiert wird, erkennt man die Pr\"azession mit der Roboter beziehungsweise der Algorithmus arbeitet.
-Bei beiden Geschwindigkeiten ist erreicht der Roboter eine Genauigkeit von unter 20 cm. Der schneller abgefahrene Pfad weist geometrisch gr\"o{\ss}ere Abweichungen zum vorgegebenen Pfad auf, als der langsam Abgefahrene. 
+Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann, wird bei AMCL der Pfad zum Ausgangspunkt zur\"uck verl\"angert. In dem die Startposition auf dem Boden markiert wird, erkennt man die Pr\"azision mit der Roboter beziehungsweise der Algorithmus arbeitet.
+Bei beiden Geschwindigkeiten ist erreicht der Roboter eine Genauigkeit von unter 20 cm. Der schneller abgefahrene Pfad weist geometrisch gr\"o{\ss}ere Abweichungen zum vorgegebenen Pfad auf, als der langsam Abgefahrene. Siehe dazu Abbildungen ~\ref{fig:amclLowSpeed} und ~\ref{fig:amclHighSpeed}.  
 Dies liegt vermutlich daran, dass die Sample-Time von AMCL bei der erh\"ohten Geschwindigkeit  von $\approx$ 3.2 m/s nicht mehr ausreicht und so Abweichungen auftereten, bevor der Controller diese korregieren kann. 
 
 \section{Zusammenfassung und Ausblick}
 
+Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie, sowie Tests des \textit{Gmapping} Algorithmus und dem Pfadvefolgungsalgorithmus von Giovanni Indiveri. Die Tests wurden auf einer Roboterplattform mithilfe von \textit{ROS} durchgef\"uhrt. 
 
-Dieses Paper pr\"asentiert den Vergleich zwischen AMCL und Odometrie. Die anfangs formulierten Ziele wurden erf\"ullt. Mit dem ROS Package kann der Roboter \"uber Eingabesysteme gesteuert werden. Mittels \textit{GMapping} ist die Erstellung einer 2D-Karte m\"oglich. Nach Belieben kann der Roboter sich mit AMCL-Daten oder Odometriedaten lokalisieren. 
+Dabei gabe es keine \"uberraschenden Ergebnisse.
+Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell fährt. Aber auch AMCL hat Schwächen und macht für Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
+Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 
-In verschiedenen Vorg\"angen wurden die Algorithmen und Systeme getestet und haben keine \"uberraschenden Ergebnisse geliefert. 
 Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
-\\
-\\
-Lokalisierungsschwierigkeiten zeigen sich in bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
-\\
-\\
+
 F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
 \\
 Neuronale Netze erm\"oglichen durch pr\"azise Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
