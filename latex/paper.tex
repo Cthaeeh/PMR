@@ -244,7 +244,8 @@ Es kann passieren, dass AMCL die Anzahl der Partikel so weit verringert das der 
 
 Probleme oder eine l\"angere Lokalisierungsdauer treten auch auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
 
-Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Ein Problem entsteht am Anfang, da AMCL nur korrekt arbeitet, wenn die Startpose vorher durch den Benutzer auf den Punkt genau gesch\"atzt wird oder durch Bewegung des Roboters spezifiziert wird. Durch die Bewegung verliert aber die Odometrie an Genauigkeit und startet nicht mehr im Ursprung (0/0). Um Genauigkeit zu garantieren, wird ein Algorithmus verwendet, der die Koordinatensysteme nach der Kalibrierung transformiert.
+Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber Joystick-Befehle und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Ein Problem entsteht am Anfang, da AMCL nur korrekt arbeitet, wenn die Startpose vorher durch den Benutzer auf den Punkt genau gesch\"atzt wird oder durch Bewegung des Roboters spezifiziert wird.
+Wird der Roboter aber bewegt, verliert die Odometrie an Genauigkeit und startet nicht mehr im Ursprung (0/0). Um Genauigkeit zu garantieren, wird ein vom Autor geschriebener Algorithmus verwendet, der die Koordinatensysteme nach der Kalibrierung transformiert. Somit ist es m\"oglich, AMCL bestm\"oglich zu nutzen und gleichzeitig die Odometrie im Ursprung starten zu lassen.
 
 \begin{figure}[h]
 	\centering
@@ -255,7 +256,7 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 
 
 
-Im Experiment startet der Roboter im Ursprung und bereits zu Beginn der Durchf\"uhrung kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
+Im Experiment startet der Roboter im Ursprung und bereits zu Beginn der Durchf\"uhrung kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzeren Pfaden w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
 
 
 Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
@@ -273,7 +274,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 
 \subsection{Test von Gmapping}
 {
-	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur so und soviel Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
+	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
 	
 	\begin{figure}[h]
 		\centering
@@ -296,7 +297,7 @@ Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand
 \subsection{Test und von \texttt{gio\_path}}
 
 
-Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmusauf theoretische Funktion zu testen. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
+Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretische Funktion zu testen. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
 
 
 \begin{figure}[h]
@@ -342,7 +343,7 @@ Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern
 \end{figure}
 
 Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschwindigkeit ($\approx$ 0,714 m/s ) mit einer Abweichung von weniger als $\approx$ 30cm funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was auch bei der Simulation ersichtlich ist. Außerdem ist die Odometrie fehlerbehaftet. Man erkennt zum Beispiel, dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
-Bei einer erh\"ohten Geschwindigkeit von $\approx$ 3.2 m/s f\"ahrt der Roboter deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran, dass die R\"ader des Roboters vor allem in Kurven keinen Halt finden und durchdrehen.   
+Bei einer erh\"ohten Geschwindigkeit von $\approx$ 3.2 m/s folgt der Roboter dem Pfad deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran, dass die R\"ader des Roboters vor allem in Kurven keinen Halt finden und durchdrehen.   
 
 \newpage  
 
@@ -356,28 +357,31 @@ Bei einer erh\"ohten Geschwindigkeit von $\approx$ 3.2 m/s f\"ahrt der Roboter d
 \end{figure}
 
 Da bei \textit{AMCL} nicht \textit{AMCL} selbst als absolute Referenz verwendet werden kann, wird bei AMCL der Pfad zum Ausgangspunkt zur\"uck verl\"angert. In dem die Startposition auf dem Boden markiert wird, erkennt man die Pr\"azision mit der Roboter beziehungsweise der Algorithmus arbeitet.
-Bei beiden Geschwindigkeiten ist erreicht der Roboter eine Genauigkeit von unter 20 cm. Der schneller abgefahrene Pfad weist geometrisch gr\"o{\ss}ere Abweichungen zum vorgegebenen Pfad auf, als der langsam Abgefahrene. Siehe dazu Abbildungen ~\ref{fig:amclLowSpeed} und ~\ref{fig:amclHighSpeed}.  
+Bei beiden Geschwindigkeiten erreicht der Roboter eine Genauigkeit von unter 20 cm. Der schneller abgefahrene Pfad weist geometrisch gr\"o{\ss}ere Abweichungen zum vorgegebenen Pfad auf. Der langsam abgefahrene Pfad hingegen schmiegt sich n\"aher an. Siehe dazu Abbildungen ~\ref{fig:amclLowSpeed} und ~\ref{fig:amclHighSpeed}.  
 Dies liegt vermutlich daran, dass die Sample-Time von AMCL bei der erh\"ohten Geschwindigkeit  von $\approx$ 3.2 m/s nicht mehr ausreicht und so Abweichungen auftereten, bevor der Controller diese korregieren kann. 
 
 \section{Zusammenfassung und Ausblick}
 
 Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie, sowie Tests des \textit{Gmapping} Algorithmus und dem Pfadvefolgungsalgorithmus von Giovanni Indiveri. Die Tests wurden auf einer Roboterplattform mithilfe von \textit{ROS} durchgef\"uhrt. 
 
-Dabei gabe es keine \"uberraschenden Ergebnisse.
+
+Dabei gab es keine \"uberraschenden Ergebnisse.
+
+Die 2D-Kartierung einer unbekannten Umgebung erfolgt mittels \textit{gmapping} und liefert genaue Ergebnisse, wenn man die Hinweise im Abschnitt  \textit{Test von Gmapping}  beachtet.
 Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
 Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 
-Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
+Der Roboter ist in der Lage selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke abzufahren. Die angegebene Punkte werden pr\"azise angesteuert, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
 
-F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
+F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel beim Wechsel der Roboter durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
 \\
 Neuronale Netze erm\"oglichen durch pr\"azise Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
 
 
 \section{Danksagung}
-Die Autoren danken dem HiWi Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
+Die Autoren danken dem Hilfswissenschaftler Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
+\\
 
-\newpage
 {%\small                   % use small if you need it
 	\bibliographystyle{plain}
 	\bibliography{paper.bib}       % use a bib-file paper.bib to collect
