@@ -266,8 +266,9 @@ Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. 
 
 
 
-\subsection{Test von Gmapping}
+\subsection{Test von Gmapping}}
 {
+	\textbf{TODO Doppelter text, Genauigkeit der Karte, Failure beim Start im Hiwiraum erwähnen ?}
 	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
 	
 	\begin{figure}[h]
@@ -367,14 +368,19 @@ Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Raus
 
 Der Roboter ist in der Lage selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke abzufahren. Die angegebene Punkte werden pr\"azise angesteuert, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
 
-F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel beim Wechsel der Roboter durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
+
+F\"ur die Zukunft kann die relative Positionsbestimmung verbessert werden, indem die Reifengr\"o{\ss}en und Achsenl\"ange präzise gemessen wird und diese Information einprogrammiert wird. Außerdem wäre es möglich weitere Sensoren wie Accelerometer, Gyroskop und Magnetometer zu verwenden. 
 \\
-Neuronale Netze erm\"oglichen durch pr\"azise Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
+Da die Fehler von \textit{AMCL} bei der Lokalisierung sofort ersichtlich waren ist es eine Idee neuronale Netze zur Lokalisierung mit Laserdaten zu verwenden. Es wäre auch sehr einfach dafür Trainingsdaten zu gewinnen.
+
+Der Giovanni Controller könnte dahingehend verbessert werden dass er mit variblen Geschwindigkeiten zurecht kommt und so auch engere Kurven fahren kann.
+
+\textbf{TODO dass mit der konstatnen Geschwindigkeit noch beim giovanni test erwähnen}
 
 
 \section{Danksagung}
 Die Autoren danken dem Hilfswissenschaftler Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und \textit{Robot Operating System}.
-\\
+\newpage
 
 {%\small                   % use small if you need it
 	\bibliographystyle{plain}
