@@ -90,10 +90,7 @@
 
 	\addcontentsline{toc}{section}{Abstract}
 
-	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform implementiert und getestet.}
-	
-	In diesem Paper werden einige dieser Algorithmen auf einem differential betriebenem Roboter auf Funktion und Genauigkeit getestet und best\"atigt, dass Pfadverfolgung sowohl mit AMCL als auch mit der schlechter einzustufenden Odometrie m\"oglich ist.\\
-	TODO einen Satz zu den Resultaten hinzufügen ? 
+	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform mit Differentialantrieb implementiert und auf Funktion und Genauigkeit getestet. Die Versuche zeigen dass Pfadverfolgung mit dem \textit{Giovanni Controller} m\"oglich ist. }
 
 \section{Einleitung}
 	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer Roboter-Plattform mit Laserscanner untersucht. 
@@ -149,7 +146,7 @@
 	
 	Die Herausforderung liegt bei der Kartierung in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz \textit{SLAM}. Denn beide bedingen sich gegenseitig. Um  zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
     
-    Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen die Laserscandaten verwendet. 
+    Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen schon die Laserscandaten verwendet. Diese Technik wird \textit{Scanmatching} genannt. Die Information über die relativen Posen von \textit{Scanmatching} und Odometrie wird fusioniert um eine bestmögliche Schätzung der Pose zu gewinnen.
 
 \subsection{Pfadverfolgung mit Giovanni-Controller}
 
@@ -219,53 +216,44 @@ ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt w
 
 \subsection{Genutzte Nodes}
 {
-	
-	\textbf{TODO bissle was zu den nodes schreiben + das bild fixen.}
+
 	\begin{figure*}[h]
 		\includegraphics[trim=9cm 1cm 7cm 1cm , clip= true,width=\textwidth]{pictures/node_graph.png}
-		\caption{Vernetzung der \textit{Nodes} im Testaufbau}
+		\caption{Vernetzung der \textit{Nodes} im Testaufbau \label{fig:nodes}}
 	\end{figure*}
-	
-	
-	
-	 Die Posedaten publiziert die Odometrie an das ROS Paket gmapping.	
-	
+	Die verwendete Software ist in \textit{ROS Nodes} organisiert. Deren grobe Verbindungen untereinander wird im Folgenden skiziert, für den Fall der Pfadverfolgung mit AMCL mit zuvor bekannter Karte beschrieben. Siehe dazu Abbildung ~\ref{fig:nodes}. 
+	\\
+	Zunächst gibt es Nodes die f\"ur die Sensoren zuständig sind, sie abstrahieren die Hardware wie den Laserscanner und die Odometrie (\textit{sick\_front} und \textit{odometry}). Deren Daten verwendet die \textit{AMCL Node} f\"ur die Lokalisierung. Die Pose wird dann zur \textit{robot\_control-Node} der f\"ur die Pfadverfolgung zust\"andig ist weitergeleitet. Dieser leitet dann Information über die ben\"otigten R\"adergeschwindigkeiten and die \textit{Node Volksbot} weiter welcher die Motoren ansteuert.
 	
 } 
 
 \section{Test der Algorithmen} 
 \subsection{Odometrie und AMCL im Vergleich}
 
-Auf kurzen Distanzen liefert die Odometrie sehr genaue Ergebnisse. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. Um das zu zeigen wird der Roboter \"ahnliche Pfade in langsamer und schneller Geschwindigkeit abfahren. 	
-
-Es kann passieren, dass AMCL die Anzahl der Partikel so weit verringert das der Zustandsraum nur unzureichend abgedeckt wird. Stimmen die wenigen Hypothesen dann nicht mit der Realit\"at \"uberein, verteilt er die Partikel \"uberall hat eine zu geringe Abdeckung des Zustandsraums und schafft es nicht mehr sich zu lokalisieren.
-
-\textbf{TODO entweder bild dazu einfügen oder absatz weg}
-
-Probleme oder eine l\"angere Lokalisierungsdauer treten auch auf, wenn eine Umgebung keine markanten Anhangspunkte liefert, ein kreisf\"ormiger Raum mit glatten W\"anden zum Beispiel. 
-
-Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Ein Problem entsteht am Anfang, da AMCL nur korrekt arbeitet, wenn die Startpose vorher durch den Benutzer auf den Punkt genau gesch\"atzt wird oder durch Bewegung des Roboters spezifiziert wird. Durch die Bewegung verliert aber die Odometrie an Genauigkeit und startet nicht mehr im Ursprung (0/0). Um Genauigkeit zu garantieren, wird ein Algorithmus verwendet, der die Koordinatensysteme nach der Kalibrierung transformiert.
+Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Siehe dazu Abbildung ~\ref{fig:odo_amcl}. Bei der Erstellung dieser Grafik gab es ein Problem: AMCL und Odometrie sollten beide im Ursprung starten, also bei der Pose (0$|$0$|$0). Denn so ist ihre Darstellung vergleichbarer. Damit AMCL jedoch korrekt arbeitet muss der Roboter erst ein Stück weit fahren. Dann ist jedoch die Odometrie nicht mehr bei (0$|$0$|$0). Um dieses Problem zu umgehen werden die Koordinatensysteme vor dem plotten so transformiert dass der Roboter, in der Darstellung immer bei (0$|$0$|$0) startet. Dies ändert nichts an Geomtetrie und Abst\"anden.    
 
 \begin{figure}[h]
 	\centering
 	\subcaptionbox{Mit einer Geschwindigkeit $\leq$ 0.8m/s}{\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_slow.jpg}}\par\medskip
-	\caption{ Odometrie und AMCL im Vergleich. }
+	\centering
+	\subcaptionbox{Mit einer Geschwindigkeit $\geq$ 3.3m/s}{\includegraphics[width=\linewidth]{pictures/odo_amcl_comparision_fast.jpg}}\par\medskip
+	\caption{ Odometrie und AMCL im Vergleich. \label{fig:odo_amcl}}
 \end{figure}
 
+Im Experiment, siehe Abbildung ~\ref{fig:odo_amcl}, zeichnet sich bereits zu Beginn der Durchf\"uhrung ab, dass der Odometriepfad fehlerhaft ist. Jedoch unter der Annahme dass \textit{AMCL} der Wahrheit entspricht. Diese Annahme wird dadurch gestützt dass \textit{AMCL} "behauptet" dass der Roboter zu seiner Startpose zurück kehrt und dies von den Autoren auch so beobachtet wurde.  
+Eine belastbarere Aussage kann man treffen wenn der Roboter zu seinem Startpunkt zurückgekehrt ist, denn dieser wurde auf $\leq$ 5 cm genau angefahren. Bei der Odometrie summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. 
+Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Bei der Orientierung macht AMCL Fehler die für Menschen direkt ersichtlich sind, siehe dazu Abbildung ~\ref{fig:amclFails}.
 
+ Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, vorallem beim schneller abgefahrenen Pfad, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt. 
 
+Die schlechteren Ergebnisse der Odometrie können wie folgt erklärt werden. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. 	
 
-Im Experiment startet der Roboter im Ursprung und bereits zu Beginn der Durchf\"uhrung kennzeichnet sich ab, dass der Odometriepfad fehlerhaft ist. Bis der Roboter wieder an der Startpose ist, summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt.
-
-
-Nachteil AMCL: benötigt Karte, Pfad kann nicht in unbekannter Umgebung abgefahren werden
-
-Vorteil: Odometrie ist h\"aufiger und schneller verf\"ugbar da der Rechenaufwand geringer ist. 
+Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. So benötigt AMCL eine Karte um funktionieren zu können. Außerdem ist der Rechenaufwand bei AMCL höher und daher ist AMCL seltener vefügbar. 
 
 \begin{figure}[h]
 	\centering
 	{\includegraphics[width=\linewidth]{pictures/amcl_fail.png}}
-	\caption{ Auch AMCL ist nicht perfekt \label{fig:amclFails}}
+	\caption{ Auch bei \textit{AMCL} gibt es Abweichungen \label{fig:amclFails}}
 \end{figure}
 
 
@@ -366,6 +354,8 @@ Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie,
 Dabei gabe es keine \"uberraschenden Ergebnisse.
 Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
 Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
+
+
 
 Der Roboter selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke ab. Die angegebene Punkte werden pr\"azise abgefahren, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schließen, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
 
