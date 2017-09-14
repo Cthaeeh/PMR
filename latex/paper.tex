@@ -146,7 +146,7 @@
 	
 	Die Herausforderung liegt bei der Kartierung in der gleichzeitigen Lokalisierung und Kartierung, dem \textit{simultaneous localization and mapping} Problem kurz \textit{SLAM}. Denn beide bedingen sich gegenseitig. Um  zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Also ein Lokalisierungsproblem. Und um sich mit dem Laserscanner zu lokalisieren, ben\"otigt man wiederum Kartendaten. \\
     
-    Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen schon die Laserscandaten verwendet. Diese Technik wird \textit{Scanmatching} genannt. Die Information über die relativen Posen von \textit{Scanmatching} und Odometrie wird fusioniert um eine bestm\"oliche Sch\"atzung der Pose zu gewinnen.
+    Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen schon die Laserscandaten verwendet. Diese Technik wird \textit{Scanmatching} genannt. Die Information über die relativen Posen von \textit{Scanmatching} und Odometrie wird fusioniert um eine bestm\"ogliche Sch\"atzung der Pose zu gewinnen.
 
 \subsection{Pfadverfolgung mit Giovanni-Controller}
 
@@ -266,7 +266,7 @@ Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. 
 
 
 
-\subsection{Test von Gmapping}
+\subsection{Test von GMapping}
 {
 	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
 	
@@ -361,15 +361,22 @@ Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie,
 
 Dabei gab es keine \"uberraschenden Ergebnisse.
 
-Die 2D-Kartierung einer unbekannten Umgebung erfolgt mittels \textit{gmapping} und liefert genaue Ergebnisse, wenn man die Hinweise im Abschnitt  \textit{Test von Gmapping}  beachtet.
-Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
+Die 2D-Kartierung einer unbekannten Umgebung erfolgt mittels \textit{GMapping} und liefert genaue Ergebnisse, wenn man die Hinweise im Abschnitt  \textit{Test von GMapping}  beachtet.
+
+
+Im Weiteren arbeitet der Roboter mit der erzeugten 2D-Karte und benutzt einen nicht-linearen Regler zur Pfadverfolgung.
+Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter, als die mit AMCL, vor allem wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
+
 Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 
-Der Roboter ist in der Lage selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke abzufahren. Die angegebene Punkte werden pr\"azise angesteuert, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schlie{\ss}en, dass der Algorithmus des Giovanni Indiverdi korrekt funktioniert.
+Der Roboter ist in der Lage selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke abzufahren. Die angegebene Punkte werden pr\"azise angesteuert, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schlie{\ss}en, dass der Algorithmus des Giovanni Indiverdi f\"ur differentialbetriebene Robotersysteme korrekt funktioniert und optimiert ist.
 
-F\"ur die Zukunft kann die Odometriebestimmung verbessert werden, zum Beispiel beim Wechsel der Roboter durch Angabe pr\"azisere Reifengr\"o{\ss}en und Achsenl\"ange.
-\\
+F\"ur die Zukunft kann die Odometriebestimmung verbessert werden. Die Berechnung der genauen Parameter f\"ur Reifengr\"o{\ss}en, Achsenl\"ange und weiteren Parametern, kann die systematischen Fehler minimieren. 
+Beim Wechsel der Roboter entstehen durchaus auch Abweichungen, da die Reifendurchmesser und auch die Gestelle der Roboter und somit die Spurbreite verschieden sind.
+
 Neuronale Netze erm\"oglichen durch pr\"azise Trainingsdaten einen Roboter auf verschiedene Situation vorzubereiten.
+
+Zusammenfassend ist zu sagen, dass die Algorithmen zu Forschungszwecken geeignet sind, aber diese effizienter durch die verschieden genannte Punkte genutzt werden k\"onnen.
 
 
 \section{Danksagung}
