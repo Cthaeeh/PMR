@@ -82,7 +82,7 @@
 {\small \texttt{barbara.fischbach@uni-wuerzburg.de}}\\
 {\small \texttt{kai.hofmann@uni-wuerzburg.de}}}
 
-\date{}
+\date{19. September 2017}
 
 
 
@@ -97,7 +97,7 @@
 
 	\addcontentsline{toc}{section}{Abstract}
 
-	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform mit Differentialantrieb implementiert und auf Funktion und Genauigkeit getestet. Die Versuche zeigen dass Pfadverfolgung mit dem \textit{Giovanni Controller} m\"oglich ist. }
+	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen, zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform mit Differentialantrieb implementiert und auf Funktion und Genauigkeit getestet. Die Versuche zeigen dass Pfadverfolgung mit dem Algorithmus von Giovanni Indiveri m\"oglich ist. }
 
 \section{Einleitung}
 	Selbstfahrende Fahrzeuge sind ein gro{\ss}es Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind wird in diesem Paper anhand einer Roboter-Plattform mit Laserscanner untersucht. 
@@ -155,7 +155,7 @@
     
     Ein einfacher Ansatz ist die Odometrie zu verwenden um die relativen Posen zwischen zwei Aufnahmen des Laserscanners zu bestimmen. Die resultierenden Karten sind nicht nutzbar. Daher werden bei der Bestimmung der relativen Posen schon die Laserscandaten verwendet. Diese Technik wird \textit{Scanmatching} genannt. Die Information über die relativen Posen von \textit{Scanmatching} und Odometrie wird fusioniert um eine bestm\"ogliche Sch\"atzung der Pose zu gewinnen.
 
-\subsection{Pfadverfolgung mit Giovanni-Controller}
+\subsection{Pfadverfolgungsalgorithmus von Giovanni Indiveri}
 
 
 \begin{figure}[h]
@@ -191,27 +191,27 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 \section{Test-Plattform}
 \subsection{ROS}
 
-F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinne, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
+	F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS genutzt. Es ist kein Betriebssystem im eigentlichen Sinne, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware, bereit mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
 
-\begin{figure}[h]
-	\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
-	\caption{Kommunikation zwischen Nodes \label{fig:rosNodes}}
-\end{figure}
+	\begin{figure}[h]
+		\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
+		\caption{Kommunikation zwischen Nodes \label{fig:rosNodes}}
+	\end{figure}
 
-Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander \"uber ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
+	Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes sich zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander \"uber ein ROS spezifisches Protokoll dass auf TCP/IP aufsetzt. Nodes k\"onnen auf Topics ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
 
 
-Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes anderer Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
+	Durch die Nodes k\"onnen Funktionalit\"aten wie Planung, Pfadverfolgung, Sensorik, etc getrennt werden. Au{\ss}erdem k\"onnen so einfach Nodes anderer Leuten genutzt werden. Dies erm\"oglicht es in kurzer Zeit eine Plattform zum Testen der Algorithmen aufzubauen, und ohne gro{\ss}en Aufwand Algorithmen durch Nodes zu implementieren. ROS-Nodes k\"onnen in C++ oder Python geschrieben werden.
 
 \subsection{Hardware}
  
-Zur Verf\"ugung stehen drei Roboter mit Differentialantrieb. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung k\"onnen Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
-Differentialantrieb ist ein Antrieb zweier unabh\"angiger R\"ader, die sich auf einer starren Achse befinden. Werden die R\"ader mit unterschiedlicher aber nicht nivellierender Geschwindigkeit angetrieben, f\"ahrt der Roboter eine Kurve. Sind die Geschwindigkeiten dagegen gleich, ist die resultierende Spur gerade.
-Da sich die Roboter im Aufbau und in der Betriebsweise gleichen, k\"onnen die Algorithmen auf allen gleich gut getestet werden.
+	Zur Verf\"ugung stehen drei Roboter mit Differentialantrieb. Zwei vom Typ Volksbot mit Motor Controller VMC, sowie ein Robotersystem mit dem EPOS2 Motor Controller von \textit{maxon motor control}. Der VMC \cite{Volksbot} wird mittels serieller Schnittstelle mit dem Steuerrechner verbunden. Neben der Motoransteuerung k\"onnen Geschwindigkeit und Strom mittels eines PID-Reglers kontrolliert werden. 
+	Differentialantrieb ist ein Antrieb zweier unabh\"angiger R\"ader, die sich auf einer starren Achse befinden. Werden die R\"ader mit unterschiedlicher aber nicht nivellierender Geschwindigkeit angetrieben, f\"ahrt der Roboter eine Kurve. Sind die Geschwindigkeiten dagegen gleich, ist die resultierende Spur gerade.
+	Da sich die Roboter im Aufbau und in der Betriebsweise gleichen, k\"onnen die Algorithmen auf allen gleich gut getestet werden.
 
-Bei allen verwendeten Robotern ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
+	Bei allen verwendeten Robotern ist an der Front ein SICK LMS100 Laserscanner auf einer H\"ohe von etwa 35 cm montiert. Dieser hat einen Arbeitsbereich von 270\degree  und eine Reichweite von bis zu 20 Metern.\cite{lms} 
  
-ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt wird und \"uber LAN und USB mit dem Roboter verbunden ist. 
+	ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt wird und \"uber LAN und USB mit dem Roboter verbunden ist. 
  
 
 \begin{figure}[h]
@@ -240,7 +240,7 @@ ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt w
 
 
 
-Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Siehe dazu Abbildung ~\ref{fig:odo_amcl}. Bei der Erstellung dieser Grafik gab es ein Problem: AMCL und Odometrie sollten beide im Ursprung starten, also bei der Pose (0$|$0$|$0). Denn so ist ihre Darstellung vergleichbarer. Damit AMCL jedoch korrekt arbeitet muss der Roboter erst ein Stück weit fahren. Dann ist jedoch die Odometrie nicht mehr bei (0$|$0$|$0). Um dieses Problem zu umgehen werden die Koordinatensysteme vor dem plotten so transformiert dass der Roboter, in der Darstellung immer bei (0$|$0$|$0) startet. Dies \"andert nichts an Geomtetrie und Abst\"anden.    
+	Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt. Siehe dazu Abbildung ~\ref{fig:odo_amcl}. Bei der Erstellung dieser Grafik gab es ein Problem: AMCL und Odometrie sollten beide im Ursprung starten, also bei der Pose (0$|$0$|$0). Denn so ist ihre Darstellung vergleichbarer. Damit AMCL jedoch korrekt arbeitet muss der Roboter erst ein Stück weit fahren. Dann ist jedoch die Odometrie nicht mehr bei (0$|$0$|$0). Um dieses Problem zu umgehen werden die Koordinatensysteme vor dem plotten so transformiert dass der Roboter, in der Darstellung immer bei (0$|$0$|$0) startet. Dies \"andert nichts an Geomtetrie und Abst\"anden.    
 
 
 \begin{figure}[h]
@@ -251,17 +251,17 @@ Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen f\"ahrt 
 	\caption{ Odometrie und AMCL im Vergleich. \label{fig:odo_amcl}}
 \end{figure}
 
-Im Experiment, siehe Abbildung ~\ref{fig:odo_amcl}, zeichnet sich bereits zu Beginn der Durchf\"uhrung ab, dass der Odometriepfad fehlerhaft ist. Jedoch unter der Annahme dass \textit{AMCL} der Wahrheit entspricht. Diese Annahme wird dadurch gestützt dass \textit{AMCL} "behauptet" dass der Roboter zu seiner Startpose zurück kehrt und dies von den Autoren auch so beobachtet wurde.  
-Eine belastbarere Aussage kann man treffen wenn der Roboter zu seinem Startpunkt zurückgekehrt ist, denn dieser wurde auf $\leq$ 5 cm genau angefahren. Bei der Odometrie summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. 
-Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Bei der Orientierung macht AMCL Fehler die für Menschen direkt ersichtlich sind, siehe dazu Abbildung ~\ref{fig:amclFails}.
+	Im Experiment, siehe Abbildung ~\ref{fig:odo_amcl}, zeichnet sich bereits zu Beginn der Durchf\"uhrung ab, dass der Odometriepfad fehlerhaft ist. Jedoch unter der Annahme dass \textit{AMCL} der Wahrheit entspricht. Diese Annahme wird dadurch gestützt dass \textit{AMCL} "behauptet" dass der Roboter zu seiner Startpose zurück kehrt und dies von den Autoren auch so beobachtet wurde.  
+	Eine belastbarere Aussage kann man treffen wenn der Roboter zu seinem Startpunkt zurückgekehrt ist, denn dieser wurde auf $\leq$ 5 cm genau angefahren. Bei der Odometrie summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. 
+	Der AMCL Pfad dagegen, kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Bei der Orientierung macht AMCL Fehler die für Menschen direkt ersichtlich sind, siehe dazu Abbildung ~\ref{fig:amclFails}.
 
- Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, vorallem beim schneller abgefahrenen Pfad, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt. 
+	 Zus\"atzlich muss in diesem Versuch die menschliche Ungenauigkeit, vorallem beim schneller abgefahrenen Pfad, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, also bei langen Pfaden, nicht gr\"o{\ss}er ist, als er auch bei k\"urzer w\"are, w\"ahrend bei der Odometrie bei langer Laufzeit die Qualit\"at stetig abnimmt. 
 
-Die schlechteren Ergebnisse der Odometrie k\"onnen wie folgt erkl\"art werden. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. 	
+	Die schlechteren Ergebnisse der Odometrie k\"onnen wie folgt erkl\"art werden. Mit wachsender Entfernung nehmen auch Fehler durch zum Beispiel unterschiedliche Dr\"ucke in den Reifen oder eine verst\"arkte Reibung oder Unebenheiten auf anderem Gel\"ande zu. Weitere Fehlerquelle sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen und Wegrutschen. 	
 
 
 
-Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. So ben\"otigt AMCL eine Karte um funktionieren zu k\"onnen. Au{\ss}erdem ist der Rechenaufwand bei AMCL h\"oher und daher ist AMCL seltener vef\"ugbar. 
+	Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. So ben\"otigt AMCL eine Karte um funktionieren zu k\"onnen. Au{\ss}erdem ist der Rechenaufwand bei AMCL h\"oher und daher ist AMCL seltener vef\"ugbar. 
 
 
 \begin{figure}[h]
@@ -299,7 +299,7 @@ Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. 
 
 
 
-\subsection{Test und von \texttt{gio\_path}}
+\subsection{Test des Pfadverfolgungsalgorithmus von Giovanni Indiveri}
 
 
 Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretische Funktion zu testen. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
@@ -314,11 +314,11 @@ Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretisch
 	\caption{Simulierte Pfadverfolgung}
 
 \end{figure}
-Es zeigt sich, dass der Giovanni-Controller nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen. Dies ist darauf zur\"uckuf\"uhren dass der Algorithmus versucht eine konstante Geschwindigkeit des Roboters halten. Es ist daher nicht m\"oglich sich auf der Stelle zu drehen.
+Es zeigt sich, dass der Pfadverfolgungsalgortihmus nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen. Dies ist darauf zur\"uckuf\"uhren dass der Algorithmus versucht eine konstante Geschwindigkeit des Roboters halten. Es ist daher nicht m\"oglich sich auf der Stelle zu drehen.
 
 
 \newpage
-Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird erneut eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert den Roboter wie in Algorithmus ~\ref{algo:gio} beschrieben.
+Um den Pfadverfolgungsalgorithmus auf einem realen Roboter zu testen, wird erneut eine ROS-Node verwendet. Die \textit{Node} steuert den Roboter wie in Algorithmus ~\ref{algo:gio} beschrieben.
 
 \begin{algorithm}
 	pathDone $\leftarrow$ false\;
@@ -333,7 +333,7 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 \caption{\textit{Giovanni Controller} Implementation \label{algo:gio}}
 \end{algorithm}
 
-Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter und niedriger Geschwindigkeit.
+Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur den Pfadverfolgungsalgorithmus und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter und niedriger Geschwindigkeit.
 
 Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern zu verfolgen, wird f\"ur die Analyse der Pfadverfolgung mit Odometrie \textit{AMCL} als "Wahrheit" verwendet.
 \newpage
@@ -346,10 +346,9 @@ Da die Autoren leider keine M\"oglichkeit haben die Position des Roboters extern
 	\caption{Pfadverfolgung mit Odometrie}
 \end{figure}
 
-Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschwindigkeit ($\approx$ 0,714 m/s ) mit einer Abweichung von weniger als $\approx$ 30cm funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abweichung kommt dabei einerseits durch den \textit{Giovanni Controller} zustande, was auch bei der Simulation ersichtlich ist. Au{\ss}erdem ist die Odometrie fehlerbehaftet. Man erkennt zum Beispiel, dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
+Zu beobachten ist, dass die Pfadverfolgung mit Odometrie bei geringer Geschwindigkeit ($\approx$ 0,714 m/s ) mit einer Abweichung von weniger als $\approx$ 30cm funktioniert. Siehe dazu Abbildung ~\ref{fig:odoLowSpeed}. Die Abweichung kommt dabei einerseits durch den Pfadverfolgungsalgorithmus zustande, was auch bei der Simulation ersichtlich ist. Au{\ss}erdem ist die Odometrie fehlerbehaftet. Man erkennt zum Beispiel, dass der Roboter am Ende des Pfades etwa 30 cm zu wenig weit f\"ahrt.
 Bei einer erh\"ohten Geschwindigkeit von $\approx$ 3.2 m/s folgt der Roboter dem Pfad deutlich schlechter siehte Abbildung \ref{fig:odoHighSpeed}. Dies liegt vermutlich daran, dass die R\"ader des Roboters vor allem in Kurven keinen Halt finden und durchdrehen.   
 
- 
 
 \begin{figure}[h]
 	\centering
