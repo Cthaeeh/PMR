@@ -221,9 +221,9 @@ ROS l\"auft auf einem handels\"ublichen Notebook, das auf den Roboter gestellt w
 		\includegraphics[trim=9cm 1cm 7cm 1cm , clip= true,width=\textwidth]{pictures/node_graph.png}
 		\caption{Vernetzung der \textit{Nodes} im Testaufbau \label{fig:nodes}}
 	\end{figure*}
-	Die verwendete Software ist in \textit{ROS Nodes} organisiert. Deren grobe Verbindungen untereinander wird im Folgenden skiziert, für den Fall der Pfadverfolgung mit AMCL mit zuvor bekannter Karte beschrieben. Siehe dazu Abbildung ~\ref{fig:nodes}. 
+	Die verwendete Software ist in \textit{ROS Nodes} organisiert. Deren grobe Verbindungen untereinander wird im Folgenden skizziert, f\"ur den Fall der Pfadverfolgung mit AMCL mit zuvor bekannter Karte beschrieben. Siehe dazu Abbildung ~\ref{fig:nodes}. 
 	\\
-	Zun\"achst gibt es Nodes die f\"ur die Sensoren zust\"andig sind, sie abstrahieren die Hardware wie den Laserscanner und die Odometrie (\textit{sick\_front} und \textit{odometry}). Deren Daten verwendet die \textit{AMCL Node} f\"ur die Lokalisierung. Die Pose wird dann zur \textit{robot\_control-Node} der f\"ur die Pfadverfolgung zust\"andig ist weitergeleitet. Dieser leitet dann Information über die ben\"otigten R\"adergeschwindigkeiten and die \textit{Node Volksbot} weiter welcher die Motoren ansteuert.
+	Zun\"achst gibt es Nodes die f\"ur die Sensoren zust\"andig sind, sie abstrahieren die Hardware wie den Laserscanner und die Odometrie (\textit{sick\_front} und \textit{odometry}). Deren Daten verwendet die \textit{AMCL Node} f\"ur die Lokalisierung. Die Pose wird dann zur \textit{robot\_control-Node}, der f\"ur die Pfadverfolgung zust\"andig ist weitergeleitet. Dieser leitet dann Information über die ben\"otigten R\"adergeschwindigkeiten and die \textit{Node Volksbot} weiter, welcher die Motoren ansteuert.
 	
 } 
 
