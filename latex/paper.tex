@@ -7,12 +7,19 @@
 \usepackage{color}
 \usepackage[rflt]{floatflt}
 \usepackage{colortbl}
+\usepackage{float}
 \usepackage{subcaption}
 \usepackage{url}
 \usepackage[vlined, ruled, boxed]{algorithm2e}
+
+\renewcommand*{\listalgorithmcfname}{Liste von Algorithmus}
+\renewcommand*{\algorithmcfname}{Algorithmus}
+\renewcommand*{\algorithmautorefname}{Algortithmus}
+
 \definecolor{Grey}{rgb}{0.5,0.5,0.5}
 \definecolor{Red}{rgb}{1.0,0.0,0.0}
 \renewcommand{\figurename}{Abbildung}
+\floatname{Algorithm}{Algorithmus}
 \usepackage{typearea}
 \areaset{156mm}{235mm}
 %\setlength{\parskip}{5pt plus 2pt minus 1pt}
@@ -138,7 +145,7 @@
 	Je n\"aher die wahrscheinliche Hypothesen bei einander liegen, desto sicherer ist der Roboter sich seiner Pose. In diesem Fall kann die Anzahl der Partikel reduziert werden um Ressource, wie Speicherplatz zu sparen. Daher das \textit{Adaptive} aus \textit{AMCL}.
 }
 \newpage
-\subsection{Kartierung mit gmapping  \cite{Gmapping}}
+\subsection{Kartierung mit gmapping  \cite{Gmapping}} \label{ssection:gmapping}
 {
 	Zur Lokalisation braucht der Roboter eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
 	
@@ -268,22 +275,22 @@ Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. 
 
 \subsection{Test von Gmapping}}
 {
-	\textbf{TODO Doppelter text, Genauigkeit der Karte, Failure beim Start im Hiwiraum erwähnen ?}
-	Das Untergeschoss des Informatikinstituts W\"urzburg ist mit einem Frauenhofer-Roboter, der mit einem Sick LMS100 Laserscanner ausgestattet ist, in einer 2D-Karte kartiert.  Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahme ist bis auf einen 1 cm genau und zeigt keine signifikanten Fehler. Bewegte Objekte wie Menschen werden erkannt und nicht in der Karte verzeichnet. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden. F\"ur klare Linie wie W\"ande ist es wichtig, das Gel\"ande mit einem Geschwindgkeitslimit von 2 km/h (halbe Schrittgeschwindigkeit) abzufahren.  
+	Für den Test des \textit{Gmapping}-Algorithmus wird eine Karte des Informatikgebäudes der Universität Würzburg erstellt. Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahmen werden mit einer Auflösung von X cm \textbf{TODO} angefertigt. Bewegte Objekte wie Menschen werden nicht in der Karte verzeichnet, da die Karte immer wieder korregiert wird. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
 	
 	\begin{figure}[h]
 		\centering
-		\subcaptionbox{fehlerhafte Karte}{
+		\subcaptionbox{fehlerhafte Karte\label{fig:failMap}}{
 			\includegraphics[width=0.45\textwidth]{pictures/firstMap.jpeg}}
-		\subcaptionbox{korrekte Karte}{
+		\subcaptionbox{korrekte Karte \label{fig:correctMap}}{
 			\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
-		\caption{Karten aufgezeichnet mit Gmapping}
+		\caption{Karten aufgezeichnet mit Gmapping \label{fig:maps}}
 	\end{figure}
 	
 	
-	Deutliche Unterschiede sind in den Karten von Abbildung 4 zu erkennen. Bild (a) zeigt eine Karte, die im ersten Versuch aufgenommen ist und aus Unwissenheit mit zu hoher Geschwindigkeit und nicht oft genug abgefahren ist. Im Vergleich dazu ist die Karte (b) durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien.
+	Deutliche Unterschiede sind in den Karten von Abbildung ~\ref{fig:maps} zu erkennen. Bild ~\ref{fig:failMap} zeigt eine Karte, bei der aus Unwissenheit der Roboter zu schnell und nur einmal durch das Gebäude fährt. Im Resultat sind die Wände des zentralen Raums nicht gerade, was sie jedoch in der Realität sind. Im Vergleich dazu ist die Karte aus Abbildung ~\ref{fig:correctMap} durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien. Und die Wände sind korrektwerweise gerade.
 	
-		
+	
+	Eine Erklärung f\"ur die schlechte Performance beim schnelleren fahren ist dass dann auch die Odometrie schlechter funktioniert. Der \textit{Gmapping} Algorithmus baut auf dieser auf, wie in Abschnitt ~\ref{ssection:gmapping} erl\"autert.
 }
 
 
@@ -293,7 +300,6 @@ Von der Lokalisierungsperformance abgesehen gibt es weitere Vor- und Nachteile. 
 
 
 Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretische Funktion zu testen. Der Robotersimulator wird als ROS-Node implementiert und soll vorgebene Pfaddateien abfahren.
-
 
 \begin{figure}[h]
 	\subcaptionbox{Verfolgung eines spiralf\"ormigen Pfades\label{fig:simulatedSpiral}}{
@@ -305,11 +311,11 @@ Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretisch
 	\caption{Simulierte Pfadverfolgung}
 
 \end{figure}
-Es zeigt sich, dass der Giovanni-Controller nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen.  
+Es zeigt sich, dass der Giovanni-Controller nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen. Dies ist darauf zur\"uckuf\"uhren dass der Algorithmus versucht eine konstante Geschwindigkeit des Roboters halten. Es ist daher nicht m\"oglich sich auf der Stelle zu drehen.
 
 
 \newpage
-Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird erneut eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert den Roboter wie folgt: 
+Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird erneut eine ROS-Node verwendet. Diese benutzt  \texttt{gio\_path} um einen realen Roboter zu steuern. Der Algorithmus steuert den Roboter wie in Algorithmus ~\ref{algo:gio} beschrieben.
 
 \begin{algorithm}
 	pathDone $\leftarrow$ false\;
@@ -321,7 +327,7 @@ Um den \texttt{gio\_path} Algorithmus auf einem realen Roboter zu testen, wird e
 		pathDone = controller.getNextState(leftSpeed, rightSpeed)\;
 		publishToMotors(leftSpeed, rightSpeed);
 	}
-\caption{\textit{Giovanni Controller} Implementation}
+\caption{\textit{Giovanni Controller} Implementation \label{algo:gio}}
 \end{algorithm}
 
 Die Autoren entscheiden sich als Testpfad eine 12m lange Spirale zu nutzen. Dieser Pfad wird viermal abgefahren, einmal mit Odometrie als Input f\"ur \textit{Giovanni Controller} und einmal mit \textit{AMCL} als Input, jeweils mit erh\"ohter und niedriger Geschwindigkeit.
