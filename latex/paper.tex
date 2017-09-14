@@ -104,7 +104,7 @@
 
 	Zur Lokalisierung in einer zuvor kartierten Umgebung kann der \textit{Adaptive Monte Carlo Localization}-Algorithmus, von Dieter Fox im Paper \textit{KLD-Sampling: Adaptive Particle Filters} \cite{amclPaper} vorgestellt, verwendet werden. 
 	
-	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-Gmapping}-Algorithmus von Giorgio Grisetti generiert werden. Der Algorithmus wird im Paper \textit{Improved Techniques for Grid Mapping
+	Die daf\"ur ben\"otigte Karte kann mit dem \textit{SLAM-GMapping}-Algorithmus von Giorgio Grisetti generiert werden. Der Algorithmus wird im Paper \textit{Improved Techniques for Grid Mapping
 	with Rao-Blackwellized Particle Filters} \cite{Gmapping} besprochen. Dieser l\"ost dass Problem der gleichzeitigen Lokalisation und Kartierung durch die Nutzung des Laserscanners schon bei der Lokalisation und nicht erst bei der Kartiertung. 
 	
 	Mit einer guten Lokalisation ist es m\"oglich einem Pfad zu folgen. Daf\"ur hat Giovanni Indiveri einen Algorithmus, im Paper \textit{SWITCHING
@@ -278,7 +278,7 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 
 
 {
-	Für den Test des \textit{Gmapping}-Algorithmus wird eine Karte des Informatikgebäudes der Universität Würzburg erstellt. Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahmen werden mit einer Auflösung von X cm \textbf{TODO} angefertigt. Bewegte Objekte wie Menschen werden nicht in der Karte verzeichnet, da die Karte immer wieder korregiert wird. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
+	F\"ur den Test des \textit{GMapping}-Algorithmus wird eine Karte des Informatikgeb\"audes der Universit\"at W\"urzburg erstellt. Um diese Karte korrekt aufzunehmen, werden nur zehn Partikel ben\"otigt. Die Aufnahmen werden mit einer Aufl\"osung von 5 cm angefertigt. Bewegte Objekte wie Menschen werden nicht in der Karte verzeichnet, da die Karte immer wieder korregiert wird. Dagegen sorgt helles Licht, das durch die Fensterfronten scheint, f\"ur eine Ungenauigkeit und kann nicht als klare Begrenzung festgestellt werden.
 	
 	\begin{figure}[h]
 		\centering
@@ -286,14 +286,14 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 			\includegraphics[width=0.45\textwidth]{pictures/firstMap.jpeg}}
 		\subcaptionbox{korrekte Karte \label{fig:correctMap}}{
 			\includegraphics[width=0.45\textwidth]{pictures/correctMap.JPG}}
-		\caption{Karten aufgezeichnet mit Gmapping \label{fig:maps}}
+		\caption{Karten aufgezeichnet mit GMapping \label{fig:maps}}
 	\end{figure}
 	
 	
-	Deutliche Unterschiede sind in den Karten von Abbildung ~\ref{fig:maps} zu erkennen. Bild ~\ref{fig:failMap} zeigt eine Karte, bei der aus Unwissenheit der Roboter zu schnell und nur einmal durch das Gebäude fährt. Im Resultat sind die Wände des zentralen Raums nicht gerade, was sie jedoch in der Realität sind. Im Vergleich dazu ist die Karte aus Abbildung ~\ref{fig:correctMap} durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien. Und die Wände sind korrektwerweise gerade.
+	Deutliche Unterschiede sind in den Karten von Abbildung ~\ref{fig:maps} zu erkennen. Bild ~\ref{fig:failMap} zeigt eine Karte, bei der aus Unwissenheit der Roboter zu schnell und nur einmal durch das Gebäude f\"ahrt. Im Resultat sind die W\"ande des zentralen Raums nicht gerade, was sie jedoch in der Realit\"at sind. Im Vergleich dazu ist die Karte aus Abbildung ~\ref{fig:correctMap} durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien. Und die W\"ande sind korrektwerweise gerade.
 	
 	
-	Eine Erklärung f\"ur die schlechte Performance beim schnelleren fahren ist dass dann auch die Odometrie schlechter funktioniert. Der \textit{Gmapping} Algorithmus baut auf dieser auf, wie in Abschnitt ~\ref{ssection:gmapping} erl\"autert.
+	Eine Erkl\"arung f\"ur die schlechte Performance beim schnelleren Fahren ist, dass dann auch die Odometrie schlechter funktioniert. Der \textit{GMapping} Algorithmus baut auf dieser auf, wie in Abschnitt ~\ref{ssection:gmapping} erl\"autert.
 }
 
 
@@ -365,7 +365,7 @@ Dies liegt vermutlich daran, dass die Sample-Time von AMCL bei der erh\"ohten Ge
 
 \section{Zusammenfassung und Ausblick}
 
-Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie, sowie Tests des \textit{Gmapping} Algorithmus und dem Pfadvefolgungsalgorithmus von Giovanni Indiveri. Die Tests wurden auf einer Roboterplattform mithilfe von \textit{ROS} durchgef\"uhrt. 
+Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie, sowie Tests des \textit{GMapping} Algorithmus und dem Pfadvefolgungsalgorithmus von Giovanni Indiveri. Die Tests wurden auf einer Roboterplattform mithilfe von \textit{ROS} durchgef\"uhrt. 
 
 
 Dabei gab es keine \"uberraschenden Ergebnisse.
