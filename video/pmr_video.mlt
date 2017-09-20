@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mlt LC_NUMERIC="de_DE.UTF-8" version="6.5.0" title="Shotcut version 17.09.04" producer="main bin">
+  <profile description="automatic" width="1600" height="900" progressive="1" sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="1600" display_aspect_den="900" frame_rate_num="30" frame_rate_den="1" colorspace="709"/>
+  <playlist id="main bin">
+    <property name="xml_retain">1</property>
+  </playlist>
+  <producer id="black" in="00:00:00,000" out="00:02:34,700">
+    <property name="length">00:02:34,733</property>
+    <property name="eof">pause</property>
+    <property name="resource">black</property>
+    <property name="aspect_ratio">1</property>
+    <property name="mlt_service">color</property>
+    <property name="set.test_audio">0</property>
+  </producer>
+  <playlist id="background">
+    <entry producer="black" in="00:00:00,000" out="00:02:34,700"/>
+  </playlist>
+  <producer id="producer0" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kai/Pictures/iceland_road_wallpaper.png</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">e495dc90ce704f93c1eec9a7ee78a29d</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+    <filter id="filter0">
+      <property name="argument">Praktikum
+Mess- und Regelungstechnik</property>
+      <property name="geometry">0,00%/0,00%:100,00%x100,00%</property>
+      <property name="family">Sans</property>
+      <property name="size">900</property>
+      <property name="weight">500</property>
+      <property name="style">normal</property>
+      <property name="fgcolour">#ffffffff</property>
+      <property name="bgcolour">#00000000</property>
+      <property name="olcolour">#ff000000</property>
+      <property name="pad">0</property>
+      <property name="halign">center</property>
+      <property name="valign">middle</property>
+      <property name="outline">0</property>
+      <property name="mlt_service">dynamictext</property>
+      <property name="shotcut:filter">dynamicText</property>
+    </filter>
+  </producer>
+  <producer id="producer1" title="Anonymous Submission" in="00:00:00,000" out="00:00:06,200">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">amcl/1_map_empty.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">367e3533491c45435441a23328a568c9</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer2" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">amcl/2_map_where_am_i.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">b9ea502b2f05dc700883aaadf1f49777</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer3" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">amcl/3_hypothesis.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">ca14f49605de24ed590a6eb3c80c7c54</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer4" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">amcl/4_meter_forward.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">a8e1f3dc6e361f6309b406576b4afca4</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer5" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">amcl/5_new_created.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">28b12279810cc1a2e2e154a9e7cd3dd4</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer6" title="Anonymous Submission" in="00:00:00,000" out="03:59:59,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">gmapping/1_scans.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">64d29e62676805b630cf80f399ae1071</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer7" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">gmapping/2_possibility.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">2bd7f7679f6cd6bb2fcfbb0b89af19a3</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <producer id="producer8" title="Anonymous Submission" in="00:00:00,000" out="00:00:03,967">
+    <property name="length">04:00:00,000</property>
+    <property name="eof">pause</property>
+    <property name="resource">gmapping/3_scan_matching.jpg</property>
+    <property name="ttl">1</property>
+    <property name="aspect_ratio">1</property>
+    <property name="progressive">1</property>
+    <property name="seekable">1</property>
+    <property name="loop">1</property>
+    <property name="mlt_service">pixbuf</property>
+    <property name="shotcut:hash">c25f97353b10d4e98c8d77abed75aaf6</property>
+    <property name="ignore_points">0</property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <playlist id="playlist0">
+    <property name="shotcut:video">1</property>
+    <property name="shotcut:name">V1</property>
+    <entry producer="producer0" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer1" in="00:00:02,933" out="00:00:06,200"/>
+    <entry producer="producer2" in="00:00:02,233" out="00:00:03,967"/>
+    <entry producer="producer3" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer4" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer5" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer6" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer7" in="00:00:00,000" out="00:00:03,967"/>
+    <entry producer="producer8" in="00:00:00,000" out="00:00:03,967"/>
+  </playlist>
+  <producer id="producer9" title="Anonymous Submission" in="00:00:00,000" out="00:02:34,700">
+    <property name="length">00:02:34,733</property>
+    <property name="eof">pause</property>
+    <property name="resource">/home/kai/Downloads/Audiobinger_-_China_Town.mp3</property>
+    <property name="audio_index">0</property>
+    <property name="video_index">-1</property>
+    <property name="mute_on_pause">0</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="shotcut:hash">d60598cc3faa520b57eeab151f557751</property>
+    <property name="ignore_points">0</property>
+    <property name="shotcut:caption">Audiobinger_-_China_Town.mp3</property>
+    <property name="shotcut:detail">/home/kai/Downloads/Audiobinger_-_China_Town.mp3</property>
+    <property name="shotcut:comment"></property>
+    <property name="global_feed">1</property>
+    <property name="xml">was here</property>
+  </producer>
+  <playlist id="playlist1">
+    <property name="shotcut:audio">1</property>
+    <property name="shotcut:name">A1</property>
+    <entry producer="producer9" in="00:00:00,000" out="00:02:34,700"/>
+  </playlist>
+  <tractor id="tractor0" title="Shotcut version 17.09.04" global_feed="1" in="00:00:00,000" out="00:02:34,700">
+    <property name="shotcut">1</property>
+    <track producer="background"/>
+    <track producer="playlist0"/>
+    <track producer="playlist1" hide="video"/>
+    <transition id="transition0">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+    <transition id="transition1">
+      <property name="a_track">0</property>
+      <property name="b_track">1</property>
+      <property name="version">0,9</property>
+      <property name="mlt_service">frei0r.cairoblend</property>
+      <property name="disable">1</property>
+    </transition>
+    <transition id="transition2">
+      <property name="a_track">0</property>
+      <property name="b_track">2</property>
+      <property name="mlt_service">mix</property>
+      <property name="always_active">1</property>
+      <property name="sum">1</property>
+    </transition>
+  </tractor>
+</mlt>

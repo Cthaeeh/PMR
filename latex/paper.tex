@@ -2,6 +2,7 @@
 \usepackage{bbm,amsthm,amsfonts,amssymb,amsmath,latexsym,epic,eepic}
 \usepackage{marvosym,graphicx,fancyhdr,bbm}
 \usepackage{graphicx}
+\usepackage[ngerman]{babel}
 \usepackage{gensymb}
 \usepackage{url}
 \usepackage{color}
@@ -97,7 +98,7 @@
 
 	\addcontentsline{toc}{section}{Abstract}
 
-	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Platform mit Differentialantrieb implementiert und auf Funktion und Genauigkeit getestet. Die Versuche zeigen, dass Pfadverfolgung mit dem Algorithmus von Giovanni Indiveri m\"oglich ist. }
+	\textbf{Die autononome Fortbewegung von Fahrzeugen spielt heutzutage eine immer gr\"o\ss{}ere Rolle. Dazu werden verschiedene Algorithmen zur Lokalisierung, Kartierung und Pfadverfolgung ben\"otigt. Diese werden auf einer realen Roboter-Plattform mit Differentialantrieb implementiert und auf Funktion und Genauigkeit getestet. Die Versuche zeigen, dass Pfadverfolgung mit dem Algorithmus von Giovanni Indiveri m\"oglich ist. }
 
 \section{Einleitung}
 	Selbstfahrende Fahrzeuge sind ein Thema der Zukunft. Damit diese zuverl\"assig und sicher fahren k\"onnen, braucht es gute Algorithmen in verschiedenen Bereichen. Wie gut bestehende Ans\"atze funktionieren und wo deren Schw\"achen sind, wird hier anhand einer Roboter-Plattform mit Laserscanner untersucht. 
@@ -124,7 +125,7 @@
 }
 \subsubsection{Adaptive Monte Carlo Localization \cite{mclWiki} \cite{amclPaper}} 
 {
-	Adaptive Monte Carlo Localization, im folgenden als AMCL abgek\"urzt, ist ein Algorithmus, der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen dar\"uber auf der Karte an, verteilt also die Partikel \"uber den Zustandsraum. Die anf\"angliche Verteilung auf der Karte kann verschieden sein. Es ist zum Beispiel m\"oglich, diese  gleichm\"a{\ss}ig \"uber die ganze Karte zu verteilen. 
+	\textit{Adaptive Monte Carlo Localization}, im folgenden als \textit{AMCL} abgek\"urzt, ist ein Algorithmus, der mit Hilfe eines Partikelfilters die Position eines Roboters bestimmt. Dazu wird eine Karte der Umgebung ben\"otigt. Da die Pose zu Beginn nicht bekannt ist, stellt der Roboter Hypothesen dar\"uber auf der Karte an, verteilt also die Partikel \"uber den Zustandsraum. Die anf\"angliche Verteilung auf der Karte kann verschieden sein. Es ist zum Beispiel m\"oglich, diese  gleichm\"a{\ss}ig \"uber die ganze Karte zu verteilen. 
 	Bei der von den Autoren verwendeten Implementation ist sie Gau{\ss}-verteilt, um eine gegebene anf\"angliche Pose, siehe Abbildung ~\ref{fig:initalParticleDistribution}. \begin{figure}[h]
 		\includegraphics[width=\linewidth]{pictures/initial_distribution.jpg}
 		\caption{Partikelverteilung in Anfangspose \label{fig:initalParticleDistribution}}
@@ -147,9 +148,9 @@
 \newpage
 \subsection{Kartierung mit GMapping  \cite{Gmapping}} \label{ssection:gmapping}
 {
-	Zur Lokalisation braucht der Roboter eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus GMapping verarbeitet.
+	Zur Lokalisation braucht der Roboter eine Karte. Eine unbekannte Umgebung wird dabei mit den Daten eines Laserscanners und den aktuellen Posedaten erfasst und von dem Algorithmus \textit{GMapping} verarbeitet.
 	
-	Die Idee des  \textit{Grid}Mappings ist, die ungenauen Sensordaten einer Umgebung auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte durch ein Gitter unterteilt, in dem bei jedem Quadrat die Wahrscheinlichkeit der Belegung vermerkt ist. Die Quadrate stellen also Objekte in der Umgebung dar. Algorithmen wie AMCL werten die Karten aus.  
+	Die Idee des  \textit{Grid-Mappings} ist, die ungenauen Sensordaten einer Umgebung auf einer 2D-Karte in bin\"aren Zufallsvariablen darzustellen. Dabei wird die Karte durch ein Gitter unterteilt, in dem bei jedem Quadrat die Wahrscheinlichkeit der Belegung vermerkt ist. Die Quadrate stellen also Objekte in der Umgebung dar. Algorithmen wie AMCL werten die Karten aus.  
 	
 	Die Herausforderung bei der Kartierung liegt in der gleichzeitigen Lokalisierung, dem \textit{simultaneous localization and mapping} Problem kurz (\textit{SLAM}). Denn beide bedingen sich gegenseitig. Um  zwei Laserscans zu einer Karte zusammenzuf\"ugen, m\"ussen die relativen Posen der Aufnahmen bekannt sein. Es ist also ein Lokalisierungsproblem.Um mit dem Laserscanner lokalisieren zu k\"onnen, ben\"otigt man wiederum Kartendaten. \\
     
@@ -160,17 +161,17 @@
 
 \begin{figure}[h]
 	\includegraphics[width=\linewidth]{pictures/Pfadverfolgung.JPG}
-	\caption{Modell der Pfadverfolgung}
+	\caption{Modell der Pfadverfolgung \label{fig:path}}
 \end{figure}
 
-	Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini\cite{Giovanni} wird zur Pfadverfolgung verwendet. Er basiert auf der Arbeit von Canudas de Wit et al. \cite{Canudas} und ist um eine Funktion erweitert, die den  minimalen Wendekreis, wie auch die maximale Geschwindigkeit des Roboters ber\"ucksichtigt. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion auf den Roboter selbst. Das Modell in Abbildung 5 stellt den abzufahrenden Pfad dar. Dabei ist der Winkel zwischen der x-Achse und der L\"angsachse des Roboters $\theta$ und $\theta_{d}$
-beschreibt den Winkel einer Tangente an den Pfad zur 
-x-Achse. Die Differenz 
+	Der nicht-lineare Regler des Giovanni Indiveri und der Maria L. Corradini\cite{Giovanni} wird zur Pfadverfolgung verwendet. Er basiert auf der Arbeit von Canudas de Wit et al. \cite{Canudas} und ist um eine Funktion erweitert, die den  minimalen Wendekreis, wie auch die maximale Geschwindigkeit des Roboters ber\"ucksichtigt. Die Implementierung garantiert nach Lyapunov, f\"ur einen beschr\"ankten, nicht-linearen Pfad, asymptotische Konvergenz und asymptotisch stabile Fehlerdynamik. Schrittweise neue Berechnungen der Reglerparameter f\"uhren zu einer schnelleren Konvergenz. Hierzu verwendet der Algorithmus eine orthogonale Projektion des Roboters auf den Pfad, als Grundlage der Berechnung. In Abbildung ~\ref{fig:path}, als Punkt p, auf dem abzufahrenden Pfad, gekennzeichnet.  Dabei ist der Winkel $\theta$ zwischen der x-Achse und der L\"angsachse des Roboters. $\theta_{d}$
+	ist der Winkel zwischen einer Tangente  an den Pfad und der 
+	x-Achse. Die Differenz 
 \begin{equation}
 \tilde{\theta} = \theta -\theta_{d}
 \end{equation}
-beschreibt den Winkel der Fahrtrichtung des Roboters und der Tangente an einem Pfadpunkt p. Der Abstand zwischen der orthogonalen Projektion des Roboters auf den Pfad und des Rotationszentrums des Roboters ist gegeben durch l.
-Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen. Die Formel f\"ur die Winkelgeschwindigkeit $\omega$ mit der linearen Geschwindigkeit u des Roboters
+	beschreibt den Winkel der Fahrtrichtung des Roboters. Der Abstand zwischen der orthogonalen Projektion des Roboters auf den Pfad und des Rotationszentrums des Roboters ist gegeben durch l.
+	Der Pfad wird zur Vereinfachungen in lineare Teilschnitte gen\"ahert, wodurch sich die Gleichungen vereinfachen. Die Formel f\"ur die Winkelgeschwindigkeit $\omega$ mit der linearen Geschwindigkeit u des Roboters
 
 
 \begin{equation}
@@ -183,19 +184,19 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 \omega= -h u y  \frac{sin(\theta)}{\theta}-\gamma\theta :h\gamma > 0
 \end{equation}\\
 
+	Aus $\omega$ k\"onnen die Radgeschwindigkeiten berechnet werden.
 
-
-	Durch Koordinatentransformation dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des l. Der Winkel Theta wird durch das \"Ubereinanderlegen zu null.
+	Durch Koordinatentransformation dient die x-Achse als die Fahrtrichtung des Robotors  und y (der Roboter-Pfad-Abstand) \"ubernimmt die Rolle des $l$. Der Winkel Theta wird durch das \"Ubereinanderlegen zu null.
 
 
 \section{Test-Plattform}
 \subsection{ROS}
 
-	F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz ROS, genutzt. Es ist kein Betriebssystem im eigentlichen Sinne, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit, mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
+	F\"ur die Implementierung und Tests der Algorithmen wird das \textit{Robot Operating System}, kurz \textit{ROS}, genutzt. Es ist kein Betriebssystem im eigentlichen Sinne, sondern ein Framework. Es erm\"oglicht Hardware-Abstraktion, Paket-Management und stellt eine Middleware bereit, mit der verschiedene Prozesse kommunizieren k\"onnen. \cite{rosWiki}
 
 	\begin{figure}[h]
 		\includegraphics[width=\linewidth]{pictures/ROS_basic_concepts.png}
-		\caption{Kommunikation zwischen Nodes \label{fig:rosNodes}}
+		\caption{Kommunikation zwischen Nodes ~\cite{nodesPic} \label{fig:rosNodes}}
 	\end{figure}
 
 	Die ROS-Software ist in sogenannten Nodes organisiert, welche die eigentlichen Berechnungen durchf\"uhren. Der ROS-Master hilft den Nodes, zueinander zu finden und eine Verbindung aufzubauen. Die Kommunikation zwischen den Nodes erfolgt dann direkt untereinander \"uber ein ROS spezifisches Protokoll, dass auf TCP/IP aufsetzt. Nodes k\"onnen in \textit{Topics} ver\"offentlichen und diese abonnieren, siehe dazu Abbildung ~\ref{fig:rosNodes}. \cite{rosConcepts}
@@ -233,14 +234,12 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 	Zun\"achst gibt es Nodes, die f\"ur die Sensoren zust\"andig sind, sie abstrahieren die Hardware wie den Laserscanner und die Odometrie (\textit{sick\_front} und \textit{odometry}). Deren Daten verwendet die \textit{AMCL Node} f\"ur die Lokalisierung. Die Pose wird dann zum \textit{robot\_control-Node}, der f\"ur die Pfadverfolgung zust\"andig ist, weitergeleitet. Dieser leitet dann Information \"uber die ben\"otigten R\"adergeschwindigkeiten and die \textit{Node Volksbot} weiter, welcher die Motoren ansteuert.
 	
 } 
-
+\newpage
 \section{Test der Algorithmen} 
 \subsection{Odometrie und AMCL im Vergleich}
 
 
-
-
-	Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen, f\"ahrt der Roboter einen "Acht"-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt, siehe dazu Abbildung ~\ref{fig:odo_amcl}. Bei der Erstellung dieser Grafik gab es ein Problem: AMCL und Odometrie sollten beide im Ursprung starten, also bei der Pose (0$|$0$|$0), denn so ist ihre Darstellung vergleichbarer. Damit AMCL jedoch korrekt arbeitet, muss der Roboter erst ein St\"uck weit fahren. Dann ist jedoch die Odometrie nicht mehr bei (0$|$0$|$0). Um dieses Problem zu umgehen, werden die Koordinatensysteme vor dem plotten so transformiert, dass der Roboter in der Darstellung immer bei (0$|$0$|$0) startet. Dies \"andert nichts an der Geometrie und den Abst\"anden.    
+	Um die Lokalisation durch AMCL und Odometrie miteinander zu vergleichen, f\"ahrt der Roboter einen ``Acht``-f\"ormigen Pfad ab. Die Steuerung erfolgt manuell \"uber einen Joystick und wird zweimal in verschiedenen Geschwindigkeiten durchgef\"uhrt, siehe dazu Abbildung ~\ref{fig:odo_amcl}. Bei der Erstellung dieser Grafik gab es ein Problem: AMCL und Odometrie sollten beide im Ursprung starten, also bei der Pose (0$|$0$|$0), denn so ist ihre Darstellung vergleichbarer. Damit AMCL jedoch korrekt arbeitet, muss der Roboter erst ein St\"uck weit fahren. Dann ist jedoch die Odometrie nicht mehr bei (0$|$0$|$0). Um dieses Problem zu umgehen, werden die Koordinatensysteme vor dem plotten so transformiert, dass der Roboter in der Darstellung immer bei (0$|$0$|$0) startet. Dies \"andert nichts an der Geometrie und den Abst\"anden.    
 
 
 \begin{figure}[h]
@@ -255,7 +254,7 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 	Eine belastbarere Aussage kann man treffen, wenn der Roboter zu seinem Startpunkt zur\"uckgekehrt ist, denn dieser wurde auf $\leq$ 5 cm genau angefahren. Bei der Odometrie summieren sich die Fehler auf und die Zielpose weicht bis zu 2 m von der Startpose ab. 
 	Der AMCL Pfad dagegen kehrt bis auf wenige Zentimeter zur Startpose zur\"uck. Bei der Orientierung macht AMCL Fehler, die f\"ur das menschliche Auge direkt ersichtlich sind, siehe dazu Abbildung ~\ref{fig:amclFails}.
 
-	 Zus\"atzlich muss in diesem Versuch die menschliche Unzulänglichkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, vor allem beim schneller abgefahrenen Pfad, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, nicht gr\"o{\ss}er wird.
+	 Zus\"atzlich muss in diesem Versuch die menschliche Unzul\"anglichkeit, wie ungenaues Augenma{\ss} und Steuerungsschwierigkeiten, vor allem beim schneller abgefahrenen Pfad, beachtet werden. Aus dem Vergleich ist ersichtlich, dass der Fehler bei AMCL auch in der Distanz, nicht gr\"o{\ss}er wird.
 	 Bei der Odometrie dagegen nimmt die Qualit\"at bei zunehmender Distanz stetig ab. 
 
 	Die schlechteren Ergebnisse der Odometrie k\"onnen wie folgt erkl\"art werden: Mit wachsender Entfernung nehmen auch Fehler zum Beispiel durch unterschiedlichen Reifendruck, eine verst\"arkte Reibung oder Unebenheiten zu. Weitere Fehlerquellen sind h\"oheren Geschwindigkeiten und engeren Kurven, dort neigen die R\"ader zum Durchdrehen. 	
@@ -291,7 +290,7 @@ vereinfacht sich im linearen Fall $\kappa(s)=0$ zu \\
 	\end{figure}
 	
 	
-	Deutliche Unterschiede sind in den Karten auf Abbildung ~\ref{fig:maps} zu erkennen. Bild ~\ref{fig:failMap} zeigt eine Karte, bei der der Roboter zu schnell und nur einmal durch das Geb\"aude f\"ahrt. Im Ergebniss sind die W\"ande des zentralen Raums nicht gerade, was sie jedoch in der Realit\"at sind. Im Vergleich dazu ist die Karte aus Abbildung ~\ref{fig:correctMap} durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien. Und die W\"ande sind korrektwerweise gerade.
+	Deutliche Unterschiede sind in den Karten auf Abbildung ~\ref{fig:maps} zu erkennen. Bild ~\ref{fig:failMap} zeigt eine Karte, bei der der Roboter zu schnell und nur einmal durch das Geb\"aude f\"ahrt. Im Ergebniss sind die W\"ande des zentralen Raums nicht gerade, was sie jedoch in der Realit\"at sind. Im Vergleich dazu ist die Karte aus Abbildung ~\ref{fig:correctMap} durch langsameres und stetigeres Abfahren detailgetreuer und hat klare Linien. Und die W\"ande sind korrekterweise gerade.
 	
 	
 	Eine Erkl\"arung f\"ur die schlechte Performance beim schnelleren Fahren ist, dass dann auch die Odometrie schlechter funktioniert. Der \textit{GMapping} Algorithmus baut auf dieser auf, wie in Abschnitt ~\ref{ssection:gmapping} erl\"autert.
@@ -315,7 +314,7 @@ Zun\"achst wird die Pfadverfolgung simuliert, um den Algorithmus auf theoretisch
 	\caption{Simulierte Pfadverfolgung}
 
 \end{figure}
-Es zeigt sich, dass der Pfadverfolgungsalgortihmus nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen. Dies ist darauf zur\"uckuf\"uhren, dass der Algorithmus versucht, eine konstante Geschwindigkeit des Roboters zu halten. Es ist daher nicht m\"oglich, sich auf der Stelle zu drehen.
+Es zeigt sich, dass der Pfadverfolgungsalgortihmus nicht immer alle Punkte des Pfades perfekt ansteuert, wie in Abbildung ~\ref{fig:simulatedSpiral} zu erkennen. Dies ist darauf zur\"uckzuf\"uhren, dass der Algorithmus versucht, eine konstante Geschwindigkeit des Roboters zu halten. Es ist daher nicht m\"oglich, sich auf der Stelle zu drehen.
 
 
 \newpage
@@ -371,13 +370,13 @@ Dieses Paper pr\"asentiert einen Vergleich zwischen \textit{AMCL} und Odometrie 
 
 Dabei gab es keine \"uberraschenden Ergebnisse.
 
-Die 2D-Kartierung einer unbekannten Umgebung erfolgt mittels \textit{GMapping} und liefert genaue Ergebnisse, wenn man die Hinweise im Abschnitt  \textit{Test von GMapping}  beachtet.
+Die 2D-Kartierung einer unbekannten Umgebung erfolgt mittels \textit{GMapping} und liefert genaue Ergebnisse, wenn man die Hinweise im Abschnitt Test von \textit{ GMapping} beachtet.
 
 
 Im Weiteren arbeitet der Roboter mit der erzeugten 2D-Karte und benutzt einen nicht-linearen Regler zur Pfadverfolgung.
 Die Lokalisation mit Hilfe von Odometrie funktioniert schlechter als die mit AMCL, vor allem, wenn der Roboter schnell f\"ahrt. Aber auch AMCL hat Schw\"achen und macht f\"ur Menschen sofort ersichtliche Fehler, siehe Abbildung  ~\ref{fig:amclFails}.
 
-Lokalisierungsschwierigkeiten von \textit{AMCL} zeigen sich auch bei lautem Rauschen, zum Beispiel in Computerr\"aumen oder in R\"aumen ohne markante Anhaltspunkte. Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
+Bewegte Hindernisse wie Menschen werden zwar vom Laser erfasst, stellen aber bei der Kartierung keine Probleme dar und werden nicht in der Darstellung ber\"ucksichtigt. 
 
 Der Roboter ist in der Lage selbst\"andig mittels Pfadverfolgung eine gegebene Punktewolke abzufahren. Die angegebenen Punkte werden pr\"azise angesteuert, je dichter der Pfad in Punkten ausgedr\"uckt ist, desto genauer wird der Pfad verfolgt. Daraus l\"asst sich schlie{\ss}en, dass der Algorithmus des Giovanni Indiverdi f\"ur differentialbetriebene Robotersysteme korrekt funktioniert und optimiert ist.
 
@@ -391,12 +390,10 @@ Da die Fehler von \textit{AMCL} bei der Lokalisierung sofort ersichtlich sind, k
 Der Giovanni Controller k\"onnte dahingehend verbessert werden, dass er mit variblen Geschwindigkeiten zurecht kommt und so auch engere Kurven fahren kann.
 
 
-Zusammenfassend ist zu sagen, dass die Algorithmen durchaus funktionsf\"ahig sind, aber mehr Effizienz durch die oben beschriebenen Maßnahmen beziehungsweise Alternativen erreicht werden kann.
-
-\textbf{TODO lautes rauschen entweder im Text vorher erwähnen oder löschen. Nachnahme von Angel rausfinden}
+Zusammenfassend ist zu sagen, dass die Algorithmen durchaus funktionsf\"ahig sind, aber mehr Effizienz durch die oben beschriebenen Ma{\ss}nahmen beziehungsweise Alternativen erreicht werden kann.
 
 \section{Danksagung}
-Die Autoren danken dem Hilfswissenschaftler Angel f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und dem \textit{Robot Operating System}.
+Die Autoren danken dem Hilfswissenschaftler Angel Alfredo Martell Rodriguez f\"ur die Unterst\"utzung und Hilfe bei verschiedenen Problemen mit dem Roboter und dem \textit{Robot Operating System}.
 \newpage
 
 {%\small                   % use small if you need it
